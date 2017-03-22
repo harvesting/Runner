@@ -43,6 +43,7 @@ public class Runner extends ApplicationAdapter {
 		batch.begin();
 		mapSprite.draw(batch);
 		batch.end();
+		cam.
 	}
 	
 	@Override
