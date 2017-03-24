@@ -12,10 +12,10 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 
 public class Runner extends ApplicationAdapter {
-	static PerspectiveCamera cam;
+	PerspectiveCamera cam;
 	Player player;
 	ModelBatch batch;
-	Vector3 cameraX = new Vector3();
+	Vector3 temp = new Vector3();
 	AssetManager manager;
 	ModelInstance ground;
 	
@@ -31,8 +31,10 @@ public class Runner extends ApplicationAdapter {
 		cam.far = 100f;
 		manager.finishLoading();
 		player = new Player( (Model) manager.get("ship.obj"));
-		ground = new ModelInstance( (Model) manager.get("Ground.obj"), new Vector3(-30, 0, 20));	
-		cam.lookAt(player.transform.getTranslation(cameraX));
+		Gdx.input.setInputProcessor(player);
+		ground = new ModelInstance( (Model) manager.get("Ground.obj"), -30, 0, 20);	
+//		player.transform.scl(0, 0, 0);
+		cam.lookAt(player.transform.getTranslation(temp));
 	}
 
 	@Override
@@ -43,12 +45,11 @@ public class Runner extends ApplicationAdapter {
 		batch.render(player);
 		batch.render(ground);
 		batch.end();
-		cam.position.set(0, 5, -5);
-//		cam.translate(player.newPosition);
-//		cam.rotate(cameraX.set(1, 0, 0), -25);
-		player.checkForInput();
+		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
+		cam.lookAt(player.transform.getTranslation(temp));
+		cam.rotate(temp.set(1, 0, 0), -25);
 		cam.update();
-		
+		player.update(Gdx.graphics.getDeltaTime());
 	}
 	
 	@Override
