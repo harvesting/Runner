@@ -15,22 +15,23 @@ public class Runner extends ApplicationAdapter {
 	PerspectiveCamera cam;
 	Player player;
 	ModelBatch batch;
-	Vector3 temp = new Vector3();
+	Vector3 cameraX = new Vector3();
 	AssetManager manager;
-	Texture ground;
+	ModelInstance ground;
 	
 	@Override
 	public void create () {
 		manager = new AssetManager();
 		manager.load("ship.obj", Model.class);
+		manager.load("Ground.obj", Model.class);
 		batch = new ModelBatch();
 		cam = new PerspectiveCamera(69, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.position.set(0, 5, -5);
 		cam.near = .1f;
 		cam.far = 100f;
 		manager.finishLoading();
-		player = new Player(manager.get("ship.obj", Model.class));
-		ground = new Texture("Ground.png");
+		player = new Player( (Model) manager.get("ship.obj"));
+		ground = new ModelInstance( (Model) manager.get("Ground.obj"), new Vector3(-30, 0, 20));
 	}
 
 	@Override
@@ -39,12 +40,13 @@ public class Runner extends ApplicationAdapter {
 		Gdx.gl.glClearColor( 1, 1, 1, 1 );
 		batch.begin(cam);
 		batch.render(player);
-		batch.draw(ground);
+		batch.render(ground);
 		batch.end();
-		cam.position.set(0, 5, -5);
-		cam.lookAt(player.transform.getTranslation(temp));
-		cam.rotate(temp.set(1, 0, 0), -25);
+//		cam.position.set(0, 5, -5);
+		cam.lookAt(player.transform.getTranslation(cameraX));
+		cam.rotate(cameraX.set(1, 0, 0), -25);
 		cam.update();
+		player.checkForInput();
 	}
 	
 	@Override
