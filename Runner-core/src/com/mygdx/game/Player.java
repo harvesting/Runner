@@ -38,6 +38,7 @@ public class Player extends ModelInstance implements InputProcessor {
 		if (keycode == Keys.RIGHT || keycode == Keys.D) {
 			speed = -1;
 			this.transform.lerp(this.transform.setToRotation(Vector3.Z, 25), .1f);
+
 		}
 		return false;
 	}
