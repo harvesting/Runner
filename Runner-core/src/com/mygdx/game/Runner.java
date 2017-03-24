@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,16 +14,15 @@ import com.badlogic.gdx.math.Vector3;
 public class Runner extends ApplicationAdapter {
 	PerspectiveCamera cam;
 	Player player;
-	ModelInstance ground;
 	ModelBatch batch;
 	Vector3 temp = new Vector3();
 	AssetManager manager;
+	Texture ground;
 	
 	@Override
 	public void create () {
 		manager = new AssetManager();
 		manager.load("ship.obj", Model.class);
-//		manager.load("Ground.png", Model.class);
 		batch = new ModelBatch();
 		cam = new PerspectiveCamera(69, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.position.set(0, 5, -5);
@@ -30,7 +30,7 @@ public class Runner extends ApplicationAdapter {
 		cam.far = 100f;
 		manager.finishLoading();
 		player = new Player(manager.get("ship.obj", Model.class));
-//		ground = new ModelInstance(manager.get("Ground.png", Model.class));
+		ground = new Texture("Ground.png");
 	}
 
 	@Override
@@ -39,6 +39,7 @@ public class Runner extends ApplicationAdapter {
 		Gdx.gl.glClearColor( 1, 1, 1, 1 );
 		batch.begin(cam);
 		batch.render(player);
+		batch.draw(ground);
 		batch.end();
 		cam.position.set(0, 5, -5);
 		cam.lookAt(player.transform.getTranslation(temp));
