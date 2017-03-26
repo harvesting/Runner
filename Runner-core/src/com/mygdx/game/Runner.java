@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -23,7 +22,7 @@ public class Runner extends ApplicationAdapter {
 	public void create () {
 		manager = new AssetManager();
 		manager.load("ship.obj", Model.class);
-		manager.load("Ground.obj", Model.class);
+		manager.load("ground.obj", Model.class);
 		batch = new ModelBatch();
 		cam = new PerspectiveCamera(69, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.position.set(0, 5, -5);
@@ -32,8 +31,7 @@ public class Runner extends ApplicationAdapter {
 		manager.finishLoading();
 		player = new Player( (Model) manager.get("ship.obj"));
 		Gdx.input.setInputProcessor(player);
-		ground = new ModelInstance( (Model) manager.get("Ground.obj"), -30, 0, 20);	
-//		player.transform.scl(0, 0, 0);
+		ground = new ModelInstance( (Model) manager.get("ground.obj"), -30, 0, 20);	
 		cam.lookAt(player.transform.getTranslation(temp));
 	}
 

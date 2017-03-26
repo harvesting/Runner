@@ -1,0 +1,20 @@
+# Alias OBJ Model File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+# File units = inches
+
+mtllib ground.mtl
+
+g Mesh1 Model
+
+usemtl ground_cracked_by_prototstar
+v 0 0 -0
+vt 0 0
+vn 0 1 -0
+v 984 0 -0
+vt 1 0
+v 984 0 -984
+vt 1 1
+v 0 0 -984
+vt 0 1
+f 1/1/1 2/2/1 3/3/1 4/4/1 
+
