@@ -48,6 +48,7 @@ public class Runner extends ApplicationAdapter {
 		cam.rotate(temp.set(1, 0, 0), -25);
 		cam.update();
 		player.update(Gdx.graphics.getDeltaTime());
+		System.out.println(player.position);
 	}
 	
 	@Override

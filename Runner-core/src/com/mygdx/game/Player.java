@@ -12,21 +12,22 @@ public class Player extends ModelInstance implements InputProcessor {
 	Vector3 position = new Vector3();
 	Vector3 oldPosition = new Vector3();
 	Vector3 temp = new Vector3();
-	int speed = 0;
+	int speed;
 	
 	public Player(Model model) {
 		super(model, 0, 5, 0);
 		this.transform.getTranslation(position);
 		oldPosition.set(position);
+		speed = 0;
 	}
 	
 	public void update(float deltaTime) {
 		this.transform.setTranslation(oldPosition.lerp(position, .1f));
-		if (speed == 1) {
+		if (speed == 1 && position.x <= 30) {
 			position.add(temp.set(velocity).scl(deltaTime));
-		} else if (speed == -1) {
+		} else if (speed == -1 && position.x >= -30) {
 			position.sub(temp.set(velocity).scl(deltaTime));
-		}
+		}	
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class Player extends ModelInstance implements InputProcessor {
 	public boolean keyUp(int keycode) {
 		if ( (keycode == Keys.LEFT || keycode == Keys.A) && (speed == 1) ) {
 			speed = 0;
-			this.transform.lerp(this.transform.setToRotation(Vector3.Z, 0), .1f);			
+			this.transform.lerp(this.transform.setToRotation(Vector3.Z, 0), .1f);	
 		}
 		if ( (keycode == Keys.RIGHT || keycode == Keys.D) && (speed == -1) ) {
 			speed = 0;
