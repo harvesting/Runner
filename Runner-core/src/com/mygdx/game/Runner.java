@@ -14,13 +14,14 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Runner extends ApplicationAdapter {
 	PerspectiveCamera cam;
-	Player player;
+	private Player player;
 	ModelBatch batch;
-	Vector3 temp = new Vector3();
+	private Vector3 temp = new Vector3();
 	AssetManager manager;
-	ModelInstance ground;
-	ModelInstance testCube;
-	ModelInstance sky;
+//	Map map = new Map();
+	private ModelInstance ground;
+	private ModelInstance testCube;
+	private ModelInstance sky;
 
 	@Override
 	public void create () {
@@ -37,11 +38,13 @@ public class Runner extends ApplicationAdapter {
 		cam.far = 100f;
 		player = new Player( (Model) manager.get("ship.obj"));
 		ground = new ModelInstance ( (Model) manager.get("ground.obj"), -50, 0, 25);
-		sky = new ModelInstance( (Model) manager.get("sky.obj"), 0, 1, -10); 
-		sky.transform.rotate(Vector3.Z, -10);
-		testCube = new ModelInstance( (Model) manager.get("Cube.obj"), 0, 0, 10);
+		sky = new ModelInstance( (Model) manager.get("sky.obj"), 0, 2, 100); 
+		sky.transform.rotate(Vector3.Z, 90);
+//		sky.transform.rotate(Vector3.Y, 90);
+		testCube = new ModelInstance( (Model) manager.get("Cube.obj"), 0, 0, 20);
 		Gdx.input.setInputProcessor(player);
 		cam.lookAt(player.transform.getTranslation(temp));	
+//		map.update(Gdx.graphics.getDeltaTime());
 	}
 
 	@Override
@@ -53,6 +56,7 @@ public class Runner extends ApplicationAdapter {
 		batch.render(ground);
 		batch.render(player);
 		batch.render(testCube);
+//		map.update(Gdx.graphics.getDeltaTime());
 		batch.end();
 		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
 		cam.lookAt(player.transform.getTranslation(temp));
