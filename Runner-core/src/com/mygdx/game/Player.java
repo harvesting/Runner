@@ -8,14 +8,14 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Player extends ModelInstance implements InputProcessor {
 	
-	Vector3 velocity = new Vector3(8f, 0, 0);
+	Vector3 velocity = new Vector3(12.5f, 0, 0);
 	Vector3 position = new Vector3();
 	Vector3 oldPosition = new Vector3();
 	Vector3 temp = new Vector3();
 	int speed;
 	
 	public Player(Model model) {
-		super(model, 0, 5, 0);
+		super(model, 0, 1, 0);
 		this.transform.getTranslation(position);
 		oldPosition.set(position);
 		speed = 0;
@@ -23,9 +23,9 @@ public class Player extends ModelInstance implements InputProcessor {
 	
 	public void update(float deltaTime) {
 		this.transform.setTranslation(oldPosition.lerp(position, .1f));
-		if (speed == 1 && position.x <= 30) {
+		if (speed == 1 && position.x <= 20) {
 			position.add(temp.set(velocity).scl(deltaTime));
-		} else if (speed == -1 && position.x >= -30) {
+		} else if (speed == -1 && position.x >= -20) {
 			position.sub(temp.set(velocity).scl(deltaTime));
 		}	
 	}
