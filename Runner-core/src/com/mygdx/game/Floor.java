@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-
+//test
 public class Floor {
 	ModelInstance groundLeft, groundMid, groundRight;
 	
