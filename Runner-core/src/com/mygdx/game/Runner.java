@@ -35,8 +35,8 @@ public class Runner extends ApplicationAdapter {
 		cam.near = .1f;
 		cam.far = 100f;
 		player = new Player( (Model) manager.get("ship.obj"));
-		sky = new ModelInstance( (Model) manager.get("sky.obj"), 0, 2, 100); 
-		sky.transform.rotate(Vector3.Z, 90);
+		sky = new ModelInstance( (Model) manager.get("sky.obj"), 65, -2, 100); 
+		sky.transform.rotate(Vector3.Y, 180);
 		testCube = new ModelInstance( (Model) manager.get("Cube.obj"), 0, 0, 20);
 		Gdx.input.setInputProcessor(player);
 		cam.lookAt(player.transform.getTranslation(temp));	
@@ -51,6 +51,7 @@ public class Runner extends ApplicationAdapter {
 		batch.begin(cam);
 		batch.render(player);
 		batch.render(testCube);
+		batch.render(sky);
 		map.drawFloor();
 		batch.end();
 		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
