@@ -48,7 +48,6 @@ public class Runner extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl.glClearColor( 1, 1, 1, 1 );
 		batch.begin(cam);
-		batch.render(sky);
 		batch.render(player);
 		batch.render(testCube);
 		map.drawCubes();

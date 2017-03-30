@@ -15,13 +15,13 @@ public class Map {
 	ModelInstance[][] floor;
 	Runner main;
 	int zOfFirstRow = 25;
+	private ModelInstance[] tempArray;
 	
 	public Map(Runner runner) {
 		main = runner;
 		seed = new Random();
 		floor = new ModelInstance[3][3];
-//		cubes = new ModelInstance[50][50];
-//		seed.nextInt(10) + 10
+		tempArray = new ModelInstance[3];
 	}
 
 	public void set() {
@@ -33,9 +33,6 @@ public class Map {
 			//floors are 30 distance away in z plane
 		}
 		zOfFirstRow = 25;
-//		groundLeft = new ModelInstance ( (Model) Runner.manager.get("ground.obj"), 16, 0, 25);
-//		groundMid = new ModelInstance ( (Model) Runner.manager.get("ground.obj"), -14, 0, 25);
-//		groundRight = new ModelInstance ( (Model) Runner.manager.get("ground.obj"), -45, 0, 25);
 	}
 	
 	public void drawCubes() {
@@ -44,9 +41,6 @@ public class Map {
 				main.batch.render(floor);
 			}
 		}
-//		main.batch.render(groundLeft);
-//		Runner.batch.render(groundMid);
-//		Runner.batch.render(groundRight);
 	}
 	
 	public void update() {
@@ -56,13 +50,12 @@ public class Map {
 		
 		zOfFirstRow += 25;
 		
-		ModelInstance[] temp = new ModelInstance[3];
 		for (int i = 0; i <=2; i++) {
-			temp[i] = floor[1][i];
+			tempArray[i] = floor[1][i];
 		}
 		for (int col = 0; col <=2; col++) {
 			floor[1][col] = floor[0][col];
-			floor[2][col] = temp[col];
+			floor[2][col] = tempArray[col];
 		}
 		
 		floor[0][0] = new ModelInstance((Model) main.manager.get("ground.obj"), 30, 0, zOfFirstRow + 50);
