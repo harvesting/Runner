@@ -10,7 +10,8 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 
-public class Runner extends ApplicationAdapter {
+public class Runner extends ApplicationAdapter
+{
 	PerspectiveCamera cam;
 	private Player player;
 	ModelBatch batch;
@@ -20,10 +21,11 @@ public class Runner extends ApplicationAdapter {
 	private ModelInstance sky;
 	private ModelInstance sky2;
 	private Map map;
-	private float playerZ = 100;;
+	private float playerZ = 100;
 
 	@Override
-	public void create () {
+	public void create()
+	{
 		manager = new AssetManager();
 		manager.load("ship.obj", Model.class);
 		manager.load("Cube.obj", Model.class);
@@ -35,27 +37,28 @@ public class Runner extends ApplicationAdapter {
 		cam.position.set(0, 5, -5);
 		cam.near = .1f;
 		cam.far = 100f;
-		player = new Player( (Model) manager.get("ship.obj"));
-		sky = new ModelInstance((Model) manager.get("sky.obj"), 50, 20, 40); 
+		player = new Player((Model) manager.get("ship.obj"));
+		sky = new ModelInstance((Model) manager.get("sky.obj"), 50, 20, 40);
 		sky2 = new ModelInstance((Model) manager.get("sky.obj"), -50, 20, 40);
 		sky.transform.rotate(Vector3.X, 100);
 		sky2.transform.rotate(Vector3.X, 100);
-		testCube = new ModelInstance( (Model) manager.get("Cube.obj"), 0, 0, 20);
+		testCube = new ModelInstance((Model) manager.get("Cube.obj"), 0, 0, 20);
 		Gdx.input.setInputProcessor(player);
-		cam.lookAt(player.transform.getTranslation(temp));	
+		cam.lookAt(player.transform.getTranslation(temp));
 		map = new Map(this);
 		map.set();
 	}
 
 	@Override
-	public void render () {
+	public void render()
+	{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		Gdx.gl.glClearColor( 1, 1, 1, 1 );
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		batch.begin(cam);
 		batch.render(player);
 		batch.render(testCube);
-		batch.render(sky);
-		batch.render(sky2);
+		// batch.render(sky);
+		// batch.render(sky2);
 		map.drawFloor();
 		batch.end();
 		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
@@ -63,16 +66,16 @@ public class Runner extends ApplicationAdapter {
 		cam.rotate(temp.set(1, 0, 0), -25);
 		cam.update();
 		player.update(Gdx.graphics.getDeltaTime());
-//		if (player.transform.getTranslation(temp).z >= playerZ) {
-//			System.out.println("here");
-//			playerZ += 100;
-//			map.update();
-//			player.numUpdates = 0;
-//		}
+		if (player.transform.getTranslation(temp).z >= playerZ)
+		{
+			playerZ += 100;
+			map.update();
+		}
 	}
-	
+
 	@Override
-	public void dispose () {
+	public void dispose()
+	{
 		batch.dispose();
 		manager.dispose();
 	}
