@@ -30,7 +30,6 @@ public class Player extends ModelInstance implements InputProcessor {
 	public void update(float deltaTime) {
 //		positionMatrix.lerp(this.transform.setTranslation(oldPosition.lerp(position, .1f)), .1f);
 		this.transform.setTranslation(oldPosition.lerp(position, .1f));
-		System.out.println(position);
 		position.add(temp.set(velocityForward).scl(deltaTime));
 		numUpdates++;
 		if (speed == 1 && position.x <= 40) {

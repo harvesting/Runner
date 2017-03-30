@@ -26,16 +26,14 @@ public class Map {
 
 	public void set() {
 		for (int row = 2; row >= 0; row--) {
-			floor[row][0] = new ModelInstance((Model) main.manager.get("ground.obj"), 30, 0, zOfFirstRow);
-			floor[row][1] = new ModelInstance((Model) main.manager.get("ground.obj"), -40, 0, zOfFirstRow);
-			floor[row][2] = new ModelInstance((Model) main.manager.get("ground.obj"), -110, 0, zOfFirstRow);
-			zOfFirstRow += 25;
+			floor[row][0] = new ModelInstance((Model) main.manager.get("ground.obj"), 100, 0, 25);
+			floor[row][1] = new ModelInstance((Model) main.manager.get("ground.obj"), 0, 0, 25);
+			floor[row][2] = new ModelInstance((Model) main.manager.get("ground.obj"), -100, 0, 25);
 			//floors are 30 distance away in z plane
 		}
-		zOfFirstRow = 25;
 	}
 	
-	public void drawCubes() {
+	public void drawFloor() {
 		for (ModelInstance[] rows: floor) {
 			for (ModelInstance floor: rows) {
 				main.batch.render(floor);
@@ -43,23 +41,11 @@ public class Map {
 		}
 	}
 	
-	public void update() {
-		floor[2][0] = null;
-		floor[2][1] = null;
-		floor[2][2] = null;
-		
-		zOfFirstRow += 25;
-		
-		for (int i = 0; i <=2; i++) {
-			tempArray[i] = floor[1][i];
+	public void update() {	
+		for (ModelInstance[] rows: floor) {
+			for (ModelInstance ground: rows) {
+				ground.transform.translate(0, 0, 25);
+			}
 		}
-		for (int col = 0; col <=2; col++) {
-			floor[1][col] = floor[0][col];
-			floor[2][col] = tempArray[col];
-		}
-		
-		floor[0][0] = new ModelInstance((Model) main.manager.get("ground.obj"), 30, 0, zOfFirstRow + 50);
-		floor[0][1] = new ModelInstance((Model) main.manager.get("ground.obj"), -40, 0, zOfFirstRow + 50);
-		floor[0][2] = new ModelInstance((Model) main.manager.get("ground.obj"), -110, 0, zOfFirstRow + 50);	
 	}
 }

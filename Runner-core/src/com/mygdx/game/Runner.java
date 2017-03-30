@@ -19,6 +19,7 @@ public class Runner extends ApplicationAdapter {
 	private ModelInstance testCube;
 	private ModelInstance sky;
 	private Map map;
+	private float playerZ = 100;;
 
 	@Override
 	public void create () {
@@ -50,17 +51,19 @@ public class Runner extends ApplicationAdapter {
 		batch.begin(cam);
 		batch.render(player);
 		batch.render(testCube);
-		map.drawCubes();
+		map.drawFloor();
 		batch.end();
 		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
 		cam.lookAt(player.transform.getTranslation(temp));
 		cam.rotate(temp.set(1, 0, 0), -25);
 		cam.update();
 		player.update(Gdx.graphics.getDeltaTime());
-		if (player.numUpdates == 160) {
-			map.update();
-			player.numUpdates = 0;
-		}
+//		if (player.transform.getTranslation(temp).z >= playerZ) {
+//			System.out.println("here");
+//			playerZ += 100;
+//			map.update();
+//			player.numUpdates = 0;
+//		}
 	}
 	
 	@Override
