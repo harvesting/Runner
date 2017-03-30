@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-
+//poop
 public class Runner extends ApplicationAdapter {
 	PerspectiveCamera cam;
 	private Player player;
