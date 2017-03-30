@@ -17,7 +17,6 @@ public class Map {
 		seed = new Random();
 //		cubes = new ModelInstance[50][50];
 //		seed.nextInt(10) + 10
-		mapVelocity = new Vector3(-.1f, 0, 0);
 	}
 	
 	public void set() {
