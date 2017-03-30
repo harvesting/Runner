@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
-//poopsy
+
 public class Runner extends ApplicationAdapter {
 	PerspectiveCamera cam;
 	private Player player;
@@ -51,13 +51,17 @@ public class Runner extends ApplicationAdapter {
 		batch.render(sky);
 		batch.render(player);
 		batch.render(testCube);
-		map.update(Gdx.graphics.getDeltaTime());
+		map.drawCubes();
 		batch.end();
 		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
 		cam.lookAt(player.transform.getTranslation(temp));
 		cam.rotate(temp.set(1, 0, 0), -25);
 		cam.update();
 		player.update(Gdx.graphics.getDeltaTime());
+		if (player.numUpdates == 160) {
+			map.update();
+			player.numUpdates = 0;
+		}
 	}
 	
 	@Override
