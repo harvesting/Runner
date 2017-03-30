@@ -1,15 +1,13 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 //poopsy
 public class Runner extends ApplicationAdapter {
@@ -18,9 +16,9 @@ public class Runner extends ApplicationAdapter {
 	ModelBatch batch;
 	private Vector3 temp = new Vector3();
 	AssetManager manager;
-	private ModelInstance ground;
 	private ModelInstance testCube;
 	private ModelInstance sky;
+	private Map map;
 
 	@Override
 	public void create () {
@@ -36,12 +34,13 @@ public class Runner extends ApplicationAdapter {
 		cam.near = .1f;
 		cam.far = 100f;
 		player = new Player( (Model) manager.get("ship.obj"));
-		ground = new ModelInstance ( (Model) manager.get("ground.obj"), -50, 0, 25);
 		sky = new ModelInstance( (Model) manager.get("sky.obj"), 0, 2, 100); 
 		sky.transform.rotate(Vector3.Z, 90);
 		testCube = new ModelInstance( (Model) manager.get("Cube.obj"), 0, 0, 20);
 		Gdx.input.setInputProcessor(player);
 		cam.lookAt(player.transform.getTranslation(temp));	
+		map = new Map(this);
+		map.set();
 	}
 
 	@Override
@@ -50,10 +49,9 @@ public class Runner extends ApplicationAdapter {
 		Gdx.gl.glClearColor( 1, 1, 1, 1 );
 		batch.begin(cam);
 		batch.render(sky);
-		batch.render(ground);
 		batch.render(player);
 		batch.render(testCube);
-//		map.update(Gdx.graphics.getDeltaTime());
+		map.update(Gdx.graphics.getDeltaTime());
 		batch.end();
 		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
 		cam.lookAt(player.transform.getTranslation(temp));

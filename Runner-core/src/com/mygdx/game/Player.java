@@ -22,12 +22,13 @@ public class Player extends ModelInstance implements InputProcessor {
 		speed = 0;
 	}
 	
+	
 	public void update(float deltaTime) {
 		this.transform.setTranslation(oldPosition.lerp(position, .1f));
-		position.add(temp.set(velocityForward).scl(deltaTime));
-		if (speed == 1 && position.x <= 20) {
+//		position.add(temp.set(velocityForward).scl(deltaTime));
+		if (speed == 1 && position.x <= 16) {
 			position.add(temp.set(velocityLeftRight).scl(deltaTime));
-		} else if (speed == -1 && position.x >= -20) {
+		} else if (speed == -1 && position.x >= -16) {
 			position.sub(temp.set(velocityLeftRight).scl(deltaTime));
 		}	
 	}
