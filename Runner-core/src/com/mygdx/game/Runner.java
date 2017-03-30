@@ -18,7 +18,6 @@ public class Runner extends ApplicationAdapter {
 	ModelBatch batch;
 	private Vector3 temp = new Vector3();
 	AssetManager manager;
-//	Map map = new Map();
 	private ModelInstance ground;
 	private ModelInstance testCube;
 	private ModelInstance sky;
@@ -40,11 +39,9 @@ public class Runner extends ApplicationAdapter {
 		ground = new ModelInstance ( (Model) manager.get("ground.obj"), -50, 0, 25);
 		sky = new ModelInstance( (Model) manager.get("sky.obj"), 0, 2, 100); 
 		sky.transform.rotate(Vector3.Z, 90);
-//		sky.transform.rotate(Vector3.Y, 90);
 		testCube = new ModelInstance( (Model) manager.get("Cube.obj"), 0, 0, 20);
 		Gdx.input.setInputProcessor(player);
 		cam.lookAt(player.transform.getTranslation(temp));	
-//		map.update(Gdx.graphics.getDeltaTime());
 	}
 
 	@Override

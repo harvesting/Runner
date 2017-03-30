@@ -15,7 +15,6 @@ public class Map {
 	
 	public Map() {
 		seed = new Random();
-		cube = (ModelInstance) main.manager.get("Cube.obj");
 //		cubes = new ModelInstance[50][50];
 //		seed.nextInt(10) + 10
 		mapVelocity = new Vector3(-.1f, 0, 0);
@@ -30,10 +29,10 @@ public class Map {
 	}
 	
 	public void update(float deltaTime) {
-		for(ModelInstance[] rows: cubes) {
-			for(ModelInstance cube: rows) {
-				main.batch.render(cube);
-			}
-		}
+//		for(ModelInstance[] rows: cubes) {
+//			for(ModelInstance cube: rows) {
+//				main.batch.render(cube);
+//			}
+//		}
 	}
 }
