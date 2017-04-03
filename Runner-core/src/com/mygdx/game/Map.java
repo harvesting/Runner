@@ -126,8 +126,6 @@ public class Map
 				ground.transform.translate(0, 0, 100);
 			}
 		}
-		sky.transform.translate(0, 0, 100);
-		
 	}
 	
 	public void updateCubes() {
