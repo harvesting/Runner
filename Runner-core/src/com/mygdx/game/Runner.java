@@ -74,7 +74,7 @@ public class Runner extends ApplicationAdapter
 		// batch.render(sky);
 		// batch.render(sky2);
 		map.drawFloor();
-		map.drawSky();
+		//map.drawSky();
 		batch.end();
 		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
 		cam.lookAt(player.transform.getTranslation(temp));

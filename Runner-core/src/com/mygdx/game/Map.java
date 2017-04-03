@@ -29,10 +29,11 @@ public class Map
 	{
 		main = runner;
 		seed = new Random();
-		sky = new ModelInstance((Model)main.manager.get("sky.obj"), 50, 15 , 40);
+/*		sky = new ModelInstance((Model)main.manager.get("sky.obj"), 50, 15 , 40);
 		sky2 = new ModelInstance((Model)main.manager.get("sky.obj"), -50, 15 , 40);
 		sky.transform.rotate(Vector3.X, 90);
-		sky2.transform.rotate(Vector3.X, 90);
+		sky2.transform.rotate(Vector3.X, 90);	*/
+		skyArray = new ModelInstance[3][3];
 		floor = new ModelInstance[3][3];
 		cubeHitboxes = new Hitbox[30][30];
 		cubes = new ModelInstance[30][30];
@@ -50,7 +51,12 @@ public class Map
 			
 			floor[row][2] = new ModelInstance((Model) main.manager.get("ground.obj"), -100, 0, row * 100);
 		}
-		
+		for(int row = 2; row >= 0; row--)
+		{
+			skyArray[row][0] = new ModelInstance((Model)main.manager.get("sky.obj"), 100, 15, row * 100);
+			skyArray[row][1] = new ModelInstance((Model)main.manager.get("sky.obj"), 0, 15, row * 100);
+			skyArray[row][2] = new ModelInstance((Model)main.manager.get("sky.obj"), -100, 15, row * 100);
+		}
 //		int x = 75;
 //		int z = 150;
 //		for (int r = 0; r < 10; r++) 
@@ -88,11 +94,11 @@ public class Map
 		}
 	}
 	
-	public void drawSky()
+/*	public void drawSky()
 	{
 		main.batch.render(sky);
 		main.batch.render(sky2);
-	}
+	}	*/
 
 	public void drawFloor()
 	{
