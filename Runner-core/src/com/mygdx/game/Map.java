@@ -93,16 +93,16 @@ public class Map
 			}
 		}
 		
-		for (ModelInstance[] row : cubes)
-		{
-			for (ModelInstance cube : row)
-			{
-				if (cube != null)
-				{
-					main.batch.render(cube);
-				}
-			}
-		}
+//		for (ModelInstance[] row : cubes)
+//		{
+//			for (ModelInstance cube : row)
+//			{
+//				if (cube != null)
+//				{
+//					main.batch.render(cube);
+//				}
+//			}
+//		}
 	}
 
 	public void update()

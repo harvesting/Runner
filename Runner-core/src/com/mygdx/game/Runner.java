@@ -75,7 +75,7 @@ public class Runner extends ApplicationAdapter
 		// batch.render(sky2);
 		map.drawFloor();
 		batch.end();
-		cam.position.set(player.transform.getTranslation(temp).add(0, 3, -5));
+		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
 		cam.lookAt(player.transform.getTranslation(temp));
 		cam.rotate(temp.set(1, 0, 0), -25);
 		cam.update();
@@ -83,13 +83,17 @@ public class Runner extends ApplicationAdapter
 		if (player.transform.getTranslation(temp).z >= playerZ)
 		{
 			playerZ += 100;
-			System.out.println("updated");
 			map.update();
 		}
 		
 		if (player.transform.getTranslation(temp).z >= playerZ - 30)
 		{
 			map.updateCubes();
+		}
+		
+		if (player.hitbox.didCollide(testHitbox))
+		{
+			System.out.println("End");
 		}
 	}
 

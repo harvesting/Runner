@@ -22,7 +22,7 @@ public class Player extends ModelInstance implements InputProcessor
 
 	public Player(Model model)
 	{
-		super(model, 0, 5, 0);
+		super(model, 0, 2, 0);
 		this.transform.getTranslation(position);
 		oldPosition.set(position);
 		speed = 0;
