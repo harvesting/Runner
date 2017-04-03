@@ -18,8 +18,8 @@ public class Runner extends ApplicationAdapter
 	private Vector3 temp = new Vector3();
 	AssetManager manager;
 	private ModelInstance testCube;
-	private ModelInstance sky;
-	private ModelInstance sky2;
+//	private ModelInstance sky;
+//	private ModelInstance sky2;
 	private Map map;
 	private float playerZ = 100;
 	Hitbox testHitbox;
@@ -41,10 +41,10 @@ public class Runner extends ApplicationAdapter
 		cam.near = .1f;
 		cam.far = 100f;
 		player = new Player((Model) manager.get("ship.obj"));
-		sky = new ModelInstance((Model) manager.get("sky.obj"), 50, 20, 40);
-		sky2 = new ModelInstance((Model) manager.get("sky.obj"), -50, 20, 40);
-		sky.transform.rotate(Vector3.X, 100);
-		sky2.transform.rotate(Vector3.X, 100);
+//		sky = new ModelInstance((Model) manager.get("sky.obj"), 50, 20, 40);
+//		sky2 = new ModelInstance((Model) manager.get("sky.obj"), -50, 20, 40);
+//		sky.transform.rotate(Vector3.X, 100);
+//		sky2.transform.rotate(Vector3.X, 100);
 		testGround = new ModelInstance((Model) manager.get("ground.obj"), 51.3f, 0, 80);
 		testCube = new ModelInstance((Model) manager.get("Cube.obj"), 10, 2.7f, 80);
 //		testCube.transform.scl(10f);
@@ -74,6 +74,7 @@ public class Runner extends ApplicationAdapter
 		// batch.render(sky);
 		// batch.render(sky2);
 		map.drawFloor();
+		map.drawSky();
 		batch.end();
 		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
 		cam.lookAt(player.transform.getTranslation(temp));

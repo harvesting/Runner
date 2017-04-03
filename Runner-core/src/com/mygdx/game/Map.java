@@ -14,6 +14,8 @@ public class Map
 	Vector3 mapVelocity;
 	ModelInstance cube;
 	ModelInstance groundLeft, groundMid, groundRight;
+	ModelInstance sky, sky2;
+	ModelInstance[][] skyArray;
 	ModelInstance[][] floor;
 	Runner main;
 	int zOfFirstRow = 25;
@@ -27,6 +29,10 @@ public class Map
 	{
 		main = runner;
 		seed = new Random();
+		sky = new ModelInstance((Model)main.manager.get("sky.obj"), 50, 15 , 40);
+		sky2 = new ModelInstance((Model)main.manager.get("sky.obj"), -50, 15 , 40);
+		sky.transform.rotate(Vector3.X, 90);
+		sky2.transform.rotate(Vector3.X, 90);
 		floor = new ModelInstance[3][3];
 		cubeHitboxes = new Hitbox[30][30];
 		cubes = new ModelInstance[30][30];
@@ -81,6 +87,12 @@ public class Map
 			System.out.println();
 		}
 	}
+	
+	public void drawSky()
+	{
+		main.batch.render(sky);
+		main.batch.render(sky2);
+	}
 
 	public void drawFloor()
 	{
@@ -93,16 +105,16 @@ public class Map
 			}
 		}
 		
-//		for (ModelInstance[] row : cubes)
-//		{
-//			for (ModelInstance cube : row)
-//			{
-//				if (cube != null)
-//				{
-//					main.batch.render(cube);
-//				}
-//			}
-//		}
+		for (ModelInstance[] row : cubes)
+		{
+			for (ModelInstance cube : row)
+			{
+				if (cube != null)
+				{
+					main.batch.render(cube);
+				}
+			}
+		}
 	}
 
 	public void update()
@@ -114,6 +126,8 @@ public class Map
 				ground.transform.translate(0, 0, 100);
 			}
 		}
+		sky.transform.translate(0, 0, 100);
+		
 	}
 	
 	public void updateCubes() {
