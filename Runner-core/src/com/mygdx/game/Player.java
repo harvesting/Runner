@@ -18,6 +18,7 @@ public class Player extends ModelInstance implements InputProcessor
 	Quaternion rotation = new Quaternion();
 	Vector3 temp = new Vector3();
 	int speed;
+	Hitbox hitbox;
 
 	public Player(Model model)
 	{
@@ -26,21 +27,23 @@ public class Player extends ModelInstance implements InputProcessor
 		oldPosition.set(position);
 		speed = 0;
 		this.transform.scl(3);
+		hitbox = new Hitbox(2.6f, 2.6f);
 	}
 
 	public void update(float deltaTime)
 	{
 		position.add(temp.set(velocityForward).scl(deltaTime));
-		if (speed == 1 && position.x <= 40)
+		if (speed == 1 && position.x <= 50)
 		{
 			position.add(temp.set(velocityLeftRight).scl(deltaTime));
-		} else if (speed == -1 && position.x >= -40)
+		} else if (speed == -1 && position.x >= -50)
 		{
 			position.sub(temp.set(velocityLeftRight).scl(deltaTime));
 		}
 		transform.getRotation(oldRotation).slerp(rotation, .1f);
 		oldPosition.lerp(position, .1f);
 		transform.set(oldPosition, oldRotation);
+		hitbox.setPosition(position.x, position.z);
 	}
 
 	@Override
