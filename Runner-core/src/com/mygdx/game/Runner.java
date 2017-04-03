@@ -18,8 +18,6 @@ public class Runner extends ApplicationAdapter
 	private Vector3 temp = new Vector3();
 	AssetManager manager;
 	private ModelInstance testCube;
-//	private ModelInstance sky;
-//	private ModelInstance sky2;
 	private Map map;
 	private float playerZ = 100;
 	Hitbox testHitbox;
@@ -71,10 +69,8 @@ public class Runner extends ApplicationAdapter
 //		batch.render(testGround);
 		batch.render(player);
 		batch.render(testCube);
-		// batch.render(sky);
-		// batch.render(sky2);
 		map.drawFloor();
-		//map.drawSky();
+		map.drawSky();
 		batch.end();
 		cam.position.set(player.transform.getTranslation(temp).add(0, 5, -5));
 		cam.lookAt(player.transform.getTranslation(temp));

@@ -14,8 +14,7 @@ public class Map
 	Vector3 mapVelocity;
 	ModelInstance cube;
 	ModelInstance groundLeft, groundMid, groundRight;
-	ModelInstance sky, sky2;
-	ModelInstance[][] skyArray;
+	ModelInstance sky, sky2, sky3;
 	ModelInstance[][] floor;
 	Runner main;
 	int zOfFirstRow = 25;
@@ -29,16 +28,29 @@ public class Map
 	{
 		main = runner;
 		seed = new Random();
-/*		sky = new ModelInstance((Model)main.manager.get("sky.obj"), 50, 15 , 40);
-		sky2 = new ModelInstance((Model)main.manager.get("sky.obj"), -50, 15 , 40);
+		sky = new ModelInstance((Model)main.manager.get("sky.obj"), 100, 15 , 30);
+		sky2 = new ModelInstance((Model)main.manager.get("sky.obj"), 0, 15 , 30);
+		sky3 = new ModelInstance((Model)main.manager.get("sky.obj"), -100, 15, 30);
 		sky.transform.rotate(Vector3.X, 90);
-		sky2.transform.rotate(Vector3.X, 90);	*/
-		skyArray = new ModelInstance[3][3];
+		sky2.transform.rotate(Vector3.X, 90);
+		sky3.transform.rotate(Vector3.X, 90);
 		floor = new ModelInstance[3][3];
 		cubeHitboxes = new Hitbox[30][30];
 		cubes = new ModelInstance[30][30];
 		difficulty = 5;
 		lastRow = 100;
+	}
+	
+	public void drawSky()
+	{
+		main.batch.render(sky);
+		main.batch.render(sky2);
+		main.batch.render(sky3);
+	}
+	
+	public void updateSky()
+	{
+		
 	}
 
 	public void set()
@@ -51,12 +63,8 @@ public class Map
 			
 			floor[row][2] = new ModelInstance((Model) main.manager.get("ground.obj"), -100, 0, row * 100);
 		}
-		for(int row = 2; row >= 0; row--)
-		{
-			skyArray[row][0] = new ModelInstance((Model)main.manager.get("sky.obj"), 100, 15, row * 100);
-			skyArray[row][1] = new ModelInstance((Model)main.manager.get("sky.obj"), 0, 15, row * 100);
-			skyArray[row][2] = new ModelInstance((Model)main.manager.get("sky.obj"), -100, 15, row * 100);
-		}
+		
+		
 //		int x = 75;
 //		int z = 150;
 //		for (int r = 0; r < 10; r++) 
@@ -94,12 +102,6 @@ public class Map
 		}
 	}
 	
-/*	public void drawSky()
-	{
-		main.batch.render(sky);
-		main.batch.render(sky2);
-	}	*/
-
 	public void drawFloor()
 	{
 //		print(cubes);
@@ -132,8 +134,8 @@ public class Map
 				ground.transform.translate(0, 0, 100);
 			}
 		}
+		
 	}
-	
 	public void updateCubes() {
 		for (int i = 0; i < 30; i++) 
 		{
