@@ -48,11 +48,7 @@ public class Map
 		main.batch.render(sky3);
 	}
 	
-	public void updateSky()
-	{
-		
-	}
-
+	
 	public void set()
 	{
 		for (int row = 2; row >= 0; row--)
