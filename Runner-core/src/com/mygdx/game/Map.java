@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -19,19 +18,18 @@ public class Map
 	int zOfFirstRow = 25;
 	Hitbox[][] cubeHitboxes;
 	ModelInstance[][] cubes;
-	ModelInstance[][] test = new ModelInstance[25][25];
 	private int difficulty;
-	int lastRow;
+	float lastRow;
 	
 	public Map(Runner runner)
 	{
 		main = runner;
 		seed = new Random();
 		floor = new ModelInstance[3][3];
-		cubeHitboxes = new Hitbox[30][30];
-		cubes = new ModelInstance[30][30];
-		difficulty = 5;
-		lastRow = 100;
+		cubeHitboxes = new Hitbox[80][7];
+		cubes = new ModelInstance[80][7];
+		difficulty = 0;
+		lastRow = 350;
 	}
 
 	public void set()
@@ -44,30 +42,17 @@ public class Map
 			
 			floor[row][2] = new ModelInstance((Model) main.manager.get("ground.obj"), -100, 0, row * 100);
 		}
-		
-//		int x = 75;
-//		int z = 150;
-//		for (int r = 0; r < 10; r++) 
-//		{
-//			for (int c = 0; c < 30; c++) 
-//			{
-////				cubeHitboxes[r][c] = new Hitbox(r - (scl * 3), 2.7f, z);
-////				cubes[r][c] = new ModelInstance((Model) main.manager.get("Cube.obj"), x, 2.7f, z);
-//				x -= 5;
-////				cubes[seed.nextInt(24)][seed.nextInt(24)] = new ModelInstance((Model) main.manager.get("Cube.obj"), seed.nextInt(200) - 100, 2.7f, z);
-//			}
-//			z -= 8;
-//			x = 75;
-//		}
-		int z = 100;
-		for (int i = 0; i < difficulty; i++) 
+		for (int r = 0; r < 80; r++)
 		{
-			for (int x = 0; x < difficulty; x++) 
+			for (int c = 0; c <= difficulty; c++)
 			{
-				cubes[seed.nextInt(29)][seed.nextInt(29)] = new ModelInstance((Model) main.manager.get("Cube.obj"), seed.nextInt(200) - 100, 2.7f, z);
+				int col = seed.nextInt(6);
+				int randX = seed.nextInt(130) - 65;
+				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
+				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
-			z -= 5;
-		}	
+		}
 	}
 	
 	public void print(ModelInstance[][] array) 
@@ -76,7 +61,13 @@ public class Map
 		{
 			for (ModelInstance cube: row)
 			{
-				System.out.print(cube + ", ");
+				if (cube == null)
+				{
+					System.out.print("0 ");
+				} else 
+				{
+					System.out.print("1 ");
+				}
 			}
 			System.out.println();
 		}
@@ -84,7 +75,6 @@ public class Map
 
 	public void drawFloor()
 	{
-//		print(cubes);
 		for (ModelInstance[] rows : floor)
 		{
 			for (ModelInstance floor : rows)
@@ -92,17 +82,16 @@ public class Map
 				main.batch.render(floor);
 			}
 		}
-		
-//		for (ModelInstance[] row : cubes)
-//		{
-//			for (ModelInstance cube : row)
-//			{
-//				if (cube != null)
-//				{
-//					main.batch.render(cube);
-//				}
-//			}
-//		}
+		for (ModelInstance[] row : cubes)
+		{
+			for (ModelInstance cube : row)
+			{
+				if (cube != null)
+				{
+					main.batch.render(cube);
+				}
+			}
+		}
 	}
 
 	public void update()
@@ -116,13 +105,79 @@ public class Map
 		}
 	}
 	
-	public void updateCubes() {
-		for (int i = 0; i < 30; i++) 
+	public void updateFirstRow() 
+	{
+		for (int r = 40; r < 80; r++)
 		{
-			if (cubes[29][i] != null)
+			for (int c = 0; c < 7; c++)
 			{
-				lastRow += 25;
-				cubes[29][i].transform.setTranslation(temp.set(seed.nextInt(200) - 100, 2.7f, lastRow));
+				cubes[r][c] = null;
+				cubeHitboxes[r][c] = null;
+			}
+			
+		}
+//		cubes[r][c].transform.translate(0, 0, 93);
+		lastRow += 225;
+		for (int r = 40; r < 80; r++)
+		{
+			for (int c = 0; c <= difficulty; c++)
+			{
+				int col = seed.nextInt(6);
+				int randX = seed.nextInt(130) - 65;
+				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
+				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
+			}
+		}
+		
+		/*old method*/
+//		ModelInstance tempArray[] = cubes[0];
+//		for (int i = 0; i < 30; i++) 
+//		{
+//			if (cubes[29][i] != null)
+//			{
+//				lastRow += 10;
+//				cubes[29][i].transform.setTranslation(temp.set(seed.nextInt(200) - 100, 2.7f, lastRow));
+//			}
+//		}
+//		cubes[0] = cubes[29];
+//		for (int r = 29; r > 1; r--)
+//		{
+//			ModelInstance temp = cubes[r + 1][c];
+//			cubes[r] = cubes[r - 1];
+//		}
+//		print(cubes);
+		
+	}
+	
+	public void updateSecondRow()
+	{
+		for (int r = 0; r < 40; r++)
+		{
+			for (int c = 0; c < 7; c++)
+			{
+				cubes[r][c] = null;
+				cubeHitboxes[r][c] = null;
+			}
+			
+		}
+		for (int r = 0; r < 40; r++)
+		{
+			for (int c = 0; c <= difficulty; c++)
+			{
+//				int choose = seed.nextInt(2);
+//				if (choose == 0)
+//				{
+//					int randX = seed.nextInt(130) - 65;
+//				} else 
+//				{
+//					
+//				}
+				int col = seed.nextInt(6);
+				int randX = seed.nextInt(130) - 65;
+				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
+				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
 		}
 	}

@@ -17,21 +17,28 @@ public class Runner extends ApplicationAdapter
 	ModelBatch batch;
 	private Vector3 temp = new Vector3();
 	AssetManager manager;
-	private ModelInstance testCube;
+//	private ModelInstance testCube;
 	private ModelInstance sky;
 	private ModelInstance sky2;
 	private Map map;
 	private float playerZ = 100;
-	Hitbox testHitbox;
+	private float playerZCubes1 = 235;
+		//235
+		//355
+		// r * 3f
+		//playerZCubes1 += 225; for both
+	private float playerZCubes2 = 355;
+//	Hitbox testHitbox;
 	Hitbox playerHitbox;
-	private ModelInstance testGround;
+	private boolean onSecondRow;
+	private boolean onFirstRow;
 
 	@Override
 	public void create()
 	{
 		manager = new AssetManager();
 		manager.load("ship.obj", Model.class);
-		manager.load("Cube.obj", Model.class);
+		manager.load("CubeBlue.obj", Model.class);
 		manager.load("ground.obj", Model.class);
 		manager.load("sky.obj", Model.class);
 		manager.finishLoading();
@@ -45,11 +52,10 @@ public class Runner extends ApplicationAdapter
 		sky2 = new ModelInstance((Model) manager.get("sky.obj"), -50, 20, 40);
 		sky.transform.rotate(Vector3.X, 100);
 		sky2.transform.rotate(Vector3.X, 100);
-		testGround = new ModelInstance((Model) manager.get("ground.obj"), 51.3f, 0, 80);
-		testCube = new ModelInstance((Model) manager.get("Cube.obj"), 10, 2.7f, 80);
+//		testCube = new ModelInstance((Model) manager.get("Cube.obj"), 10, 2.7f, 80);
 //		testCube.transform.scl(10f);
-		testHitbox = new Hitbox(2.7f, 2.7f);
-		testHitbox.setPosition(testCube.transform.getTranslation(temp).x, testCube.transform.getTranslation(temp).z);
+//		testHitbox = new Hitbox(2.7f, 2.7f);
+//		testHitbox.setPosition(testCube.transform.getTranslation(temp).x, testCube.transform.getTranslation(temp).z);
 		playerHitbox = new Hitbox(2.6f, 2.6f);
 		playerHitbox.setPosition(player.transform.getTranslation(temp).x, player.transform.getTranslation(temp).y);
 //		test.get(i).setPosition(floor[row][2].transform.getTranslation(temp).x, floor[row][2].transform.getTranslation(temp).y);
@@ -57,7 +63,8 @@ public class Runner extends ApplicationAdapter
 		cam.lookAt(player.transform.getTranslation(temp));
 		map = new Map(this);
 		map.set();
-		
+		onFirstRow = true;
+//		map.print(map.cubes);
 	}
 
 	@Override
@@ -70,7 +77,7 @@ public class Runner extends ApplicationAdapter
 		batch.begin(cam);
 //		batch.render(testGround);
 		batch.render(player);
-		batch.render(testCube);
+//		batch.render(testCube);
 		// batch.render(sky);
 		// batch.render(sky2);
 		map.drawFloor();
@@ -84,16 +91,73 @@ public class Runner extends ApplicationAdapter
 		{
 			playerZ += 100;
 			map.update();
+//			if (playerZ != 100)
+//			{
+//				System.out.println("update");
+//				map.updateCubes();
+//			}
 		}
 		
-		if (player.transform.getTranslation(temp).z >= playerZ - 30)
+		if (player.transform.getTranslation(temp).z >= playerZCubes1)
 		{
-			map.updateCubes();
+			playerZCubes1 += 225;
+			onSecondRow = true;
+			onFirstRow = false;
+			map.updateFirstRow();
 		}
 		
-		if (player.hitbox.didCollide(testHitbox))
+		if (player.transform.getTranslation(temp).z >= playerZCubes2)
 		{
-			System.out.println("End");
+			playerZCubes2 += 225;
+			onSecondRow = false;
+			onFirstRow = true;
+			map.updateSecondRow();
+		}
+//		
+//		for (Hitbox[] row: map.cubeHitboxes)
+//		{
+//			for (Hitbox box: row)
+//			{
+//				if (box != null)
+//				{
+//					if (player.hitbox.didCollide(box))
+//					{ 
+//						System.out.println("End");
+//					}
+//				}
+//			}
+//		}
+		if (onSecondRow)
+		{
+			for (int row = 0; row < 40; row++)
+			{
+				for (int col = 0; col < 7; col++)
+				{
+					if (map.cubeHitboxes[row][col] != null)
+					{
+						if (player.hitbox.didCollide(map.cubeHitboxes[row][col]))
+						{
+							System.out.println("End");
+						}
+					}
+				}
+			}
+		}
+		if (onFirstRow)
+		{
+			for (int row = 40; row < 80; row++)
+			{
+				for (int col = 0; col < 7; col++)
+				{
+					if (map.cubeHitboxes[row][col] != null)
+					{
+						if (player.hitbox.didCollide(map.cubeHitboxes[row][col]))
+						{
+							System.out.println("End");
+						}
+					}
+				}
+			}
 		}
 	}
 

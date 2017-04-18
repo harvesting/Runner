@@ -33,10 +33,10 @@ public class Player extends ModelInstance implements InputProcessor
 	public void update(float deltaTime)
 	{
 		position.add(temp.set(velocityForward).scl(deltaTime));
-		if (speed == 1 && position.x <= 50)
+		if (speed == 1 && position.x <= 63)
 		{
 			position.add(temp.set(velocityLeftRight).scl(deltaTime));
-		} else if (speed == -1 && position.x >= -50)
+		} else if (speed == -1 && position.x >= -63)
 		{
 			position.sub(temp.set(velocityLeftRight).scl(deltaTime));
 		}
