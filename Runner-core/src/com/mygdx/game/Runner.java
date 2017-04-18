@@ -17,7 +17,7 @@ public class Runner extends ApplicationAdapter
 	ModelBatch batch;
 	private Vector3 temp = new Vector3();
 	AssetManager manager;
-//	private ModelInstance testCube;
+	private ModelInstance testCube;
 	private ModelInstance sky;
 	private ModelInstance sky2;
 	private Map map;

@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -13,6 +14,7 @@ public class Map
 	Vector3 mapVelocity;
 	ModelInstance cube;
 	ModelInstance groundLeft, groundMid, groundRight;
+	ModelInstance sky, sky2, sky3;
 	ModelInstance[][] floor;
 	Runner main;
 	int zOfFirstRow = 25;
@@ -25,13 +27,27 @@ public class Map
 	{
 		main = runner;
 		seed = new Random();
+		sky = new ModelInstance((Model)main.manager.get("sky.obj"), 100, 15 , 30);
+		sky2 = new ModelInstance((Model)main.manager.get("sky.obj"), 0, 15 , 30);
+		sky3 = new ModelInstance((Model)main.manager.get("sky.obj"), -100, 15, 30);
+		sky.transform.rotate(Vector3.X, 90);
+		sky2.transform.rotate(Vector3.X, 90);
+		sky3.transform.rotate(Vector3.X, 90);
 		floor = new ModelInstance[3][3];
 		cubeHitboxes = new Hitbox[80][7];
 		cubes = new ModelInstance[80][7];
 		difficulty = 0;
 		lastRow = 350;
 	}
-
+	
+	public void drawSky()
+	{
+		main.batch.render(sky);
+		main.batch.render(sky2);
+		main.batch.render(sky3);
+	}
+	
+	
 	public void set()
 	{
 		for (int row = 2; row >= 0; row--)
@@ -72,7 +88,7 @@ public class Map
 			System.out.println();
 		}
 	}
-
+	
 	public void drawFloor()
 	{
 		for (ModelInstance[] rows : floor)
@@ -103,8 +119,8 @@ public class Map
 				ground.transform.translate(0, 0, 100);
 			}
 		}
+		
 	}
-	
 	public void updateFirstRow() 
 	{
 		for (int r = 40; r < 80; r++)
