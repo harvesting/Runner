@@ -27,16 +27,16 @@ public class Player extends ModelInstance implements InputProcessor
 		oldPosition.set(position);
 		speed = 0;
 		this.transform.scl(3);
-		hitbox = new Hitbox(2.6f, 2.6f);
+		hitbox = new Hitbox(2f, 2f);
 	}
 
-	public void update(float deltaTime)
+	public void update(float deltaTime, Map map)
 	{
 		position.add(temp.set(velocityForward).scl(deltaTime));
-		if (speed == 1 && position.x <= 63)
+		if (speed == 1 && position.x <= 64)
 		{
 			position.add(temp.set(velocityLeftRight).scl(deltaTime));
-		} else if (speed == -1 && position.x >= -63)
+		} else if (speed == -1 && position.x >= -64)
 		{
 			position.sub(temp.set(velocityLeftRight).scl(deltaTime));
 		}
@@ -44,6 +44,7 @@ public class Player extends ModelInstance implements InputProcessor
 		oldPosition.lerp(position, .1f);
 		transform.set(oldPosition, oldRotation);
 		hitbox.setPosition(position.x, position.z);
+//		map.sky.transform.setTranslation(0, 40, position.z + 95);
 	}
 
 	@Override

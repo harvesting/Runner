@@ -3,8 +3,10 @@ package com.mygdx.game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
 public class Map
@@ -14,37 +16,47 @@ public class Map
 	Vector3 mapVelocity;
 	ModelInstance cube;
 	ModelInstance groundLeft, groundMid, groundRight;
-	ModelInstance sky, sky2, sky3;
+	ModelInstance sky;
 	ModelInstance[][] floor;
+	ModelInstance fenceBackground;
+	ModelInstance fenceForeground;
 	Runner main;
 	int zOfFirstRow = 25;
 	Hitbox[][] cubeHitboxes;
 	ModelInstance[][] cubes;
 	private int difficulty;
 	float lastRow;
+	float fenceZ;
+	private boolean onForeground;
+	int level = 0;
 	
 	public Map(Runner runner)
 	{
 		main = runner;
 		seed = new Random();
-		sky = new ModelInstance((Model)main.manager.get("sky.obj"), 100, 15 , 30);
-		sky2 = new ModelInstance((Model)main.manager.get("sky.obj"), 0, 15 , 30);
-		sky3 = new ModelInstance((Model)main.manager.get("sky.obj"), -100, 15, 30);
+		sky = new ModelInstance((Model) main.manager.get("sky.obj"), 0, 40, 90);
+//		sky.transform.rotate(rotation.set(Vector3.Y, 90));
+//		sky.transform.set(rotation.set(Vector3.Y, 90));
 		sky.transform.rotate(Vector3.X, 90);
-		sky2.transform.rotate(Vector3.X, 90);
-		sky3.transform.rotate(Vector3.X, 90);
+		sky.transform.rotate(Vector3.Y, 180);
+		sky.transform.rotate(Vector3.X, 180);
+		sky.transform.rotate(Vector3.Z, 90);
+		sky.transform.rotate(Vector3.X, 90);
+//		sky.transform.setToRotation(Vector3.X, 45);
 		floor = new ModelInstance[3][3];
 		cubeHitboxes = new Hitbox[80][7];
 		cubes = new ModelInstance[80][7];
+		fenceForeground = new ModelInstance((Model) main.manager.get("Fence.g3db"), 0, 0, 100);
+		fenceBackground = new ModelInstance((Model) main.manager.get("Fence.g3db"), 0, 0, 200);
 		difficulty = 0;
 		lastRow = 350;
+		fenceZ = 125;
+		onForeground = true;
 	}
 	
 	public void drawSky()
 	{
 		main.batch.render(sky);
-		main.batch.render(sky2);
-		main.batch.render(sky3);
 	}
 	
 	
@@ -64,7 +76,7 @@ public class Map
 			{
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
-				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.g3db"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
 				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
 				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
@@ -89,13 +101,17 @@ public class Map
 		}
 	}
 	
-	public void drawFloor()
+	public void drawFloor(Environment env)
 	{
+		main.batch.render(fenceForeground);
+//		fenceForeground.transform.setTra
+//		fenceBackground.transform.setTranslation();
+		main.batch.render(fenceBackground);
 		for (ModelInstance[] rows : floor)
 		{
 			for (ModelInstance floor : rows)
 			{
-				main.batch.render(floor);
+				main.batch.render(floor, env);
 			}
 		}
 		for (ModelInstance[] row : cubes)
@@ -104,7 +120,7 @@ public class Map
 			{
 				if (cube != null)
 				{
-					main.batch.render(cube);
+					main.batch.render(cube, env);
 				}
 			}
 		}
@@ -112,6 +128,15 @@ public class Map
 
 	public void update()
 	{
+		if (onForeground)
+		{
+			fenceForeground.transform.setTranslation(0, 0, fenceBackground.transform.getTranslation(temp).z + 100);
+			onForeground = false;
+		}	else 
+		{
+			fenceBackground.transform.setTranslation(0, 0, fenceForeground.transform.getTranslation(temp).z + 100);
+			onForeground = true;
+		}
 		for (ModelInstance[] rows : floor)
 		{
 			for (ModelInstance ground : rows)
@@ -119,10 +144,9 @@ public class Map
 				ground.transform.translate(0, 0, 100);
 			}
 		}
-		
 	}
 	public void updateFirstRow() 
-	{
+	{	
 		for (int r = 40; r < 80; r++)
 		{
 			for (int c = 0; c < 7; c++)
@@ -130,7 +154,6 @@ public class Map
 				cubes[r][c] = null;
 				cubeHitboxes[r][c] = null;
 			}
-			
 		}
 //		cubes[r][c].transform.translate(0, 0, 93);
 		lastRow += 225;
@@ -140,7 +163,7 @@ public class Map
 			{
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
-				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.g3db"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
 				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
 				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
@@ -191,10 +214,15 @@ public class Map
 //				}
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
-				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.g3db"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
 				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
 				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
 		}
+	}
+	
+	public int checkForNewLevel()
+	{
+		return 3;
 	}
 }
