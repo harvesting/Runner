@@ -1,20 +1,20 @@
 # Alias OBJ Model File
 # Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
-# File units = inches
+# File units = millimeters
 
 mtllib sky.mtl
 
 g Mesh1 Model
 
-usemtl sky_003
-v 0 0 -0
+usemtl sky
+v 1.95611e-13 -0.0448867 123.986
 vt 0 0
-vn 0 1 -0
-v 135.977 0 -0
+vn 25.4 0 -2.68017e-14
+v -7.55717e-14 -0.0448867 -133.014
 vt 1 0
-v 135.977 0 -76.4873
+v -7.55717e-14 51.3551 -133.014
 vt 1 1
-v 0 0 -76.4873
+v 1.95611e-13 51.3551 123.986
 vt 0 1
 f 1/1/1 2/2/1 3/3/1 4/4/1 
 
