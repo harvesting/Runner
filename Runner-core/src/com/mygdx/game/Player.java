@@ -44,7 +44,6 @@ public class Player extends ModelInstance implements InputProcessor
 		oldPosition.lerp(position, .1f);
 		transform.set(oldPosition, oldRotation);
 		hitbox.setPosition(position.x, position.z);
-//		map.sky.transform.setTranslation(0, 40, position.z + 95);
 	}
 
 	@Override

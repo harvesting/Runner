@@ -18,8 +18,8 @@ public class Map
 	ModelInstance groundLeft, groundMid, groundRight;
 	ModelInstance sky;
 	ModelInstance[][] floor;
-	ModelInstance fenceBackground;
-	ModelInstance fenceForeground;
+	ModelInstance fenceBackgroundSmall;
+	ModelInstance fenceForegroundSmall;
 	Runner main;
 	int zOfFirstRow = 25;
 	Hitbox[][] cubeHitboxes;
@@ -29,6 +29,8 @@ public class Map
 	float fenceZ;
 	private boolean onForeground;
 	int level = 0;
+	private ModelInstance fenceForegroundBig;
+	private ModelInstance fenceBackgroundBig;
 	
 	public Map(Runner runner)
 	{
@@ -46,8 +48,10 @@ public class Map
 		floor = new ModelInstance[3][3];
 		cubeHitboxes = new Hitbox[80][7];
 		cubes = new ModelInstance[80][7];
-		fenceForeground = new ModelInstance((Model) main.manager.get("Fence.g3db"), 0, 0, 100);
-		fenceBackground = new ModelInstance((Model) main.manager.get("Fence.g3db"), 0, 0, 200);
+		fenceForegroundSmall = new ModelInstance((Model) main.manager.get("FenceSmall.obj"), 0, 0, 100);
+		fenceBackgroundSmall = new ModelInstance((Model) main.manager.get("FenceSmall.obj"), 0, 0, 200);
+		fenceForegroundBig = new ModelInstance((Model) main.manager.get("FenceBig.obj"), 0, 0, 100);
+		fenceBackgroundBig = new ModelInstance((Model) main.manager.get("FenceBig.obj"), 0, 0, 200);
 		difficulty = 0;
 		lastRow = 350;
 		fenceZ = 125;
@@ -58,7 +62,6 @@ public class Map
 	{
 		main.batch.render(sky);
 	}
-	
 	
 	public void set()
 	{
@@ -101,12 +104,18 @@ public class Map
 		}
 	}
 	
-	public void drawFloor(Environment env)
+	public void drawFloor(Environment env, int size)
 	{
-		main.batch.render(fenceForeground);
-//		fenceForeground.transform.setTra
-//		fenceBackground.transform.setTranslation();
-		main.batch.render(fenceBackground);
+		if (size == 1)
+		{
+			main.batch.render(fenceForegroundSmall);
+			main.batch.render(fenceBackgroundSmall);
+		} else if (size == 2)
+		{
+			main.batch.render(fenceForegroundBig);
+			main.batch.render(fenceBackgroundBig);
+		}
+		
 		for (ModelInstance[] rows : floor)
 		{
 			for (ModelInstance floor : rows)
@@ -114,6 +123,10 @@ public class Map
 				main.batch.render(floor, env);
 			}
 		}
+	}
+	
+	public void drawCubes(Environment env)
+	{
 		for (ModelInstance[] row : cubes)
 		{
 			for (ModelInstance cube : row)
@@ -130,12 +143,30 @@ public class Map
 	{
 		if (onForeground)
 		{
-			fenceForeground.transform.setTranslation(0, 0, fenceBackground.transform.getTranslation(temp).z + 100);
-			onForeground = false;
-		}	else 
+			if (main.beginning)
+			{
+				fenceForegroundSmall.transform.setTranslation(0, 0, fenceBackgroundSmall.transform.getTranslation(temp).z + 100);
+				onForeground = false;
+			} 
+			
+			if (main.middle)
+			{
+				fenceForegroundSmall.transform.setTranslation(0, 0, fenceBackgroundSmall.transform.getTranslation(temp).z + 100);
+				onForeground = false;
+			}
+		} else 
 		{
-			fenceBackground.transform.setTranslation(0, 0, fenceForeground.transform.getTranslation(temp).z + 100);
-			onForeground = true;
+			if (main.beginning)
+			{
+				fenceBackgroundBig.transform.setTranslation(0, 0, fenceForegroundSmall.transform.getTranslation(temp).z + 100);
+				onForeground = true;
+			} 
+			
+			if (main.middle)
+			{
+				fenceBackgroundSmall.transform.setTranslation(0, 0, fenceForegroundSmall.transform.getTranslation(temp).z + 100);
+				onForeground = true;
+			}
 		}
 		for (ModelInstance[] rows : floor)
 		{
@@ -145,6 +176,7 @@ public class Map
 			}
 		}
 	}
+	
 	public void updateFirstRow() 
 	{	
 		for (int r = 40; r < 80; r++)
@@ -225,4 +257,6 @@ public class Map
 	{
 		return 3;
 	}
+	
+	
 }
