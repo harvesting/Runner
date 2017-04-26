@@ -18,9 +18,9 @@ public class Map
 	ModelInstance groundLeft, groundMid, groundRight;
 	ModelInstance sky;
 	ModelInstance[][] floor;
-	ModelInstance fenceBackgroundSmall;
-	ModelInstance fenceForegroundSmall;
-	Runner main;
+	ModelInstance fenceBackground;
+	ModelInstance fenceForeground;
+	Runner game;
 	int zOfFirstRow = 25;
 	Hitbox[][] cubeHitboxes;
 	ModelInstance[][] cubes;
@@ -29,14 +29,12 @@ public class Map
 	float fenceZ;
 	private boolean onForeground;
 	int level = 0;
-	private ModelInstance fenceForegroundBig;
-	private ModelInstance fenceBackgroundBig;
 	
 	public Map(Runner runner)
 	{
-		main = runner;
+		game = runner;
 		seed = new Random();
-		sky = new ModelInstance((Model) main.manager.get("sky.obj"), 0, 40, 90);
+		sky = new ModelInstance((Model) game.manager.get("sky.obj"), 0, 40, 90);
 //		sky.transform.rotate(rotation.set(Vector3.Y, 90));
 //		sky.transform.set(rotation.set(Vector3.Y, 90));
 		sky.transform.rotate(Vector3.X, 90);
@@ -48,10 +46,8 @@ public class Map
 		floor = new ModelInstance[3][3];
 		cubeHitboxes = new Hitbox[80][7];
 		cubes = new ModelInstance[80][7];
-		fenceForegroundSmall = new ModelInstance((Model) main.manager.get("FenceSmall.obj"), 0, 0, 100);
-		fenceBackgroundSmall = new ModelInstance((Model) main.manager.get("FenceSmall.obj"), 0, 0, 200);
-		fenceForegroundBig = new ModelInstance((Model) main.manager.get("FenceBig.obj"), 0, 0, 100);
-		fenceBackgroundBig = new ModelInstance((Model) main.manager.get("FenceBig.obj"), 0, 0, 200);
+		fenceForeground = new ModelInstance((Model) game.manager.get("Fence.obj"), 0, 0, 350);
+		fenceBackground = new ModelInstance((Model) game.manager.get("Fence.obj"), 0, 0, 200);
 		difficulty = 0;
 		lastRow = 350;
 		fenceZ = 125;
@@ -60,18 +56,18 @@ public class Map
 	
 	public void drawSky()
 	{
-		main.batch.render(sky);
+		game.batch.render(sky);
 	}
 	
 	public void set()
 	{
 		for (int row = 2; row >= 0; row--)
 		{
-			floor[row][0] = new ModelInstance((Model) main.manager.get("ground.obj"), 100, 0, row * 100);
+			floor[row][0] = new ModelInstance((Model) game.manager.get("ground.obj"), 100, 0, row * 100);
 			
-			floor[row][1] = new ModelInstance((Model) main.manager.get("ground.obj"), 0, 0, row * 100);
+			floor[row][1] = new ModelInstance((Model) game.manager.get("ground.obj"), 0, 0, row * 100);
 			
-			floor[row][2] = new ModelInstance((Model) main.manager.get("ground.obj"), -100, 0, row * 100);
+			floor[row][2] = new ModelInstance((Model) game.manager.get("ground.obj"), -100, 0, row * 100);
 		}
 		for (int r = 0; r < 80; r++)
 		{
@@ -79,7 +75,7 @@ public class Map
 			{
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
-				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.g3db"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubes[r][col] = new ModelInstance((Model) game.manager.get("Cube.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
 				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
 				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
@@ -104,23 +100,30 @@ public class Map
 		}
 	}
 	
-	public void drawFloor(Environment env, int size)
+	public void drawFloor(Environment env)
 	{
-		if (size == 1)
-		{
-			main.batch.render(fenceForegroundSmall);
-			main.batch.render(fenceBackgroundSmall);
-		} else if (size == 2)
-		{
-			main.batch.render(fenceForegroundBig);
-			main.batch.render(fenceBackgroundBig);
-		}
-		
+		game.batch.render(fenceForeground);
+		game.batch.render(fenceBackground);
+				
 		for (ModelInstance[] rows : floor)
 		{
 			for (ModelInstance floor : rows)
 			{
-				main.batch.render(floor, env);
+				game.batch.render(floor, env);
+			}
+		}
+	}
+	
+	public void drawFloor()
+	{
+		game.batch.render(fenceForeground);
+//		game.batch.render(fenceBackground);
+				
+		for (ModelInstance[] rows : floor)
+		{
+			for (ModelInstance floor : rows)
+			{
+				game.batch.render(floor);
 			}
 		}
 	}
@@ -133,7 +136,7 @@ public class Map
 			{
 				if (cube != null)
 				{
-					main.batch.render(cube, env);
+					game.batch.render(cube, env);
 				}
 			}
 		}
@@ -141,33 +144,16 @@ public class Map
 
 	public void update()
 	{
-		if (onForeground)
-		{
-			if (main.beginning)
-			{
-				fenceForegroundSmall.transform.setTranslation(0, 0, fenceBackgroundSmall.transform.getTranslation(temp).z + 100);
-				onForeground = false;
-			} 
-			
-			if (main.middle)
-			{
-				fenceForegroundSmall.transform.setTranslation(0, 0, fenceBackgroundSmall.transform.getTranslation(temp).z + 100);
-				onForeground = false;
-			}
-		} else 
-		{
-			if (main.beginning)
-			{
-				fenceBackgroundBig.transform.setTranslation(0, 0, fenceForegroundSmall.transform.getTranslation(temp).z + 100);
-				onForeground = true;
-			} 
-			
-			if (main.middle)
-			{
-				fenceBackgroundSmall.transform.setTranslation(0, 0, fenceForegroundSmall.transform.getTranslation(temp).z + 100);
-				onForeground = true;
-			}
-		}
+//		if (onForeground)
+//		{
+//			fenceForeground.transform.setTranslation(0, 0, fenceBackground.transform.getTranslation(temp).z + 250);
+//			onForeground = false;
+//		} else 
+//		{
+//			fenceBackground.transform.setTranslation(0, 0, fenceForeground.transform.getTranslation(temp).z + 250);
+//			onForeground = true;
+//		}
+		
 		for (ModelInstance[] rows : floor)
 		{
 			for (ModelInstance ground : rows)
@@ -195,7 +181,7 @@ public class Map
 			{
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
-				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.g3db"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubes[r][col] = new ModelInstance((Model) game.manager.get("Cube.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
 				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
 				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
@@ -246,7 +232,7 @@ public class Map
 //				}
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
-				cubes[r][col] = new ModelInstance((Model) main.manager.get("CubeBlue.g3db"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubes[r][col] = new ModelInstance((Model) game.manager.get("Cube.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
 				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
 				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}

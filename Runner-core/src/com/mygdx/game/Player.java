@@ -30,17 +30,20 @@ public class Player extends ModelInstance implements InputProcessor
 		hitbox = new Hitbox(2f, 2f);
 	}
 
-	public void update(float deltaTime, Map map)
+	public void update(float deltaTime, Map map, int leftRight)
 	{
 		position.add(temp.set(velocityForward).scl(deltaTime));
-		if (speed == 1 && position.x <= 64)
+		if (leftRight == 1)
 		{
-			position.add(temp.set(velocityLeftRight).scl(deltaTime));
-		} else if (speed == -1 && position.x >= -64)
-		{
-			position.sub(temp.set(velocityLeftRight).scl(deltaTime));
+			if (speed == 1 && position.x <= 64)
+			{
+				position.add(temp.set(velocityLeftRight).scl(deltaTime));
+			} else if (speed == -1 && position.x >= -64)
+			{
+				position.sub(temp.set(velocityLeftRight).scl(deltaTime));
+			}
+			transform.getRotation(oldRotation).slerp(rotation, .1f);
 		}
-		transform.getRotation(oldRotation).slerp(rotation, .1f);
 		oldPosition.lerp(position, .1f);
 		transform.set(oldPosition, oldRotation);
 		hitbox.setPosition(position.x, position.z);

@@ -2,20 +2,9 @@
 ## Alias OBJ Material File
 # Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
 
-newmtl Sketchy_Stone
+newmtl Brick_Tumbled
 Ka 0.000000 0.000000 0.000000
-Kd 0.560784 0.560784 0.560784
+Kd 0.525490 0.517647 0.513725
 Ks 0.330000 0.330000 0.330000
-map_Kd Fence/Sketchy_Stone.jpg
-
-newmtl _Sketchy_Stone_1
-Ka 0.000000 0.000000 0.000000
-Kd 0.560784 0.560784 0.560784
-Ks 0.330000 0.330000 0.330000
-map_Kd Fence/_Sketchy_Stone_1.jpg
-
-newmtl FrontColor
-Ka 0.000000 0.000000 0.000000
-Kd 1.000000 1.000000 1.000000
-Ks 0.330000 0.330000 0.330000
+map_Kd Fence/Brick_Tumbled.jpg
 
