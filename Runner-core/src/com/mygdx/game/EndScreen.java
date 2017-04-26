@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class EndScreen implements Screen
 {
 	private final SpriteBatch batch = new SpriteBatch();
-	private final Texture pic = new Texture("badlogic.jpg");
+	private final Texture pic = new Texture("lose-screen.png");
 
 	@Override
 	public void show() 
@@ -21,9 +21,9 @@ public class EndScreen implements Screen
 	public void render(float delta) 
 	{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 0);
 		batch.begin();
-		batch.draw(pic, 0, 0);
+		batch.draw(pic, 75, 75);
 		batch.end();
 	}
 

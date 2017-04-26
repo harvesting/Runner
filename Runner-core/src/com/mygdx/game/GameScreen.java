@@ -150,8 +150,7 @@ public class GameScreen implements Screen
 					{
 						if (game.player.hitbox.didCollide(game.map.cubeHitboxes[row][col]))
 						{
-//							this.setScreen(new EndScreen());
-							System.out.println("End");
+							game.setScreen(new EndScreen());
 						}
 					}
 				}
@@ -169,8 +168,7 @@ public class GameScreen implements Screen
 					{
 						if (game.player.hitbox.didCollide(game.map.cubeHitboxes[row][col]))
 						{
-//							this.setScreen(new EndScreen());
-							System.out.println("End");
+							game.setScreen(new EndScreen());
 						}
 					}
 				}
