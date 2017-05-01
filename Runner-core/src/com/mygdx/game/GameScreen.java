@@ -186,8 +186,8 @@ public class GameScreen implements Screen
 		{
 			if (game.player.transform.getTranslation(temp).z > game.map.lastRow - (79 * 3) - 15)
 			{
-				game.player.updateForwardSpeed(5);
-				game.player.updateLeftRightSpeed(5);
+				game.player.updateForwardSpeed(6);
+				game.player.updateLeftRightSpeed(6);
 				playerSpeedNeedsUpdate = false;
 			}
 		}
