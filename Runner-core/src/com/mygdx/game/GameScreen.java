@@ -154,12 +154,7 @@ public class GameScreen implements Screen
 		orangeSpeedNeedsUpdate = true;
 		purpleSpeedNeedsUpdate = true;
 		
-		for (int row = 2; row >= 0; row--)
-		{
-			game.map.floor[row][0].transform.setToTranslation(temp.set(100, 0, row * 100));
-			game.map.floor[row][1].transform.setToTranslation(temp.set(0, 0, row * 100));
-			game.map.floor[row][2].transform.setToTranslation(temp.set(-100, 0, row * 100));
-		}
+		game.map.set();
 	}
 	
 	@Override
@@ -167,60 +162,8 @@ public class GameScreen implements Screen
 	{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl.glClearColor(232/255f, 244/255f, 248/255f, 1);
-		game.batch.begin(game.cam);
-		game.map.drawCubes(environment);
-		game.map.drawFloor();
-		game.batch.render(game.player);
-		
-		// Renders level signs only at certain interval
-		if (scoreInt < 12)
-		{
-			game.batch.render(level1Sign1);
-			game.batch.render(level1Sign2);
-			game.batch.render(level1Sign3);
-		}
-		
-		if (scoreInt < 58 && scoreInt > 45)
-		{
-			game.batch.render(level2Sign1);
-			game.batch.render(level2Sign2);
-			game.batch.render(level2Sign3);
-		}
-		
-		if (scoreInt < 150 && scoreInt > 133)
-		{
-			game.batch.render(level3Sign1);
-			game.batch.render(level3Sign2);
-			game.batch.render(level3Sign3);
-		}
-		
-		if (scoreInt < 265 && scoreInt > 248)
-		{
-			game.batch.render(level4Sign1);
-			game.batch.render(level4Sign2);
-			game.batch.render(level4Sign3);
-		}
-		
-		if (scoreInt < 426 && scoreInt > 405)
-		{
-			game.batch.render(level5Sign1);
-			game.batch.render(level5Sign2);
-			game.batch.render(level5Sign3);
-		}
-		
-		if (scoreInt < 576 && scoreInt > 560)
-		{
-			game.batch.render(level6Sign1);
-			game.batch.render(level6Sign2);
-			game.batch.render(level6Sign3);
-		}
-		
-		game.batch.end();
-		batch.begin();
-		scoreInt = (int) game.player.transform.getTranslation(temp).z / 10;
-		batch.draw(score, 0, 0);
-		font.draw(batch, Integer.toString(scoreInt), 94, 463);
-		batch.end();
+		draw();
+		renderSigns();
 
 		game.cam.position.set(game.player.transform.getTranslation(temp).add(0, 5, -5));
 		game.cam.lookAt(game.player.transform.getTranslation(temp));
@@ -234,58 +177,7 @@ public class GameScreen implements Screen
 			playerZCubes1 += 225;
 			onSecondRow = true;
 			onFirstRow = false;
-			
-			if (scoreInt < 38)
-			{
-				cube = "CubeGreen.obj";
-			} else if (scoreInt > 38 && scoreInt < 133)
-			{
-				cube = "CubeYellow.obj";
-				scale = 0;	
-				if (yellowSpeedNeedsUpdate)
-				{
-					playerSpeedNeedsUpdate = true;
-					yellowSpeedNeedsUpdate = false;
-				}
-			} else if (scoreInt > 133 && scoreInt < 245) 
-			{
-				cube = "CubeOrange.obj";
-				scale = 0;
-				if (orangeSpeedNeedsUpdate)
-				{
-					playerSpeedNeedsUpdate = true;
-					orangeSpeedNeedsUpdate = false;
-					game.map.difficulty++;
-				}
-			} else if (scoreInt > 245 && scoreInt < 393)
-			{
-				cube = "CubeBlue.obj";
-				scale = 0;
-				if (blueSpeedNeedsUpdate)
-				{
-					playerSpeedNeedsUpdate = true;
-					blueSpeedNeedsUpdate = false;
-				}
-			} else if (scoreInt > 393 && scoreInt < 555) 
-			{
-				cube = "CubeRed.obj";
-				scale = 0;
-				if (redSpeedNeedsUpdate)
-				{
-					playerSpeedNeedsUpdate = true;
-					redSpeedNeedsUpdate = false;
-					game.map.difficulty++;
-				}
-			} else if (scoreInt > 555)
-			{
-				cube = "CubePurple.obj";
-				scale = 0;
-				if (purpleSpeedNeedsUpdate)
-				{
-					playerSpeedNeedsUpdate = true;
-					purpleSpeedNeedsUpdate = false;
-				}
-			}
+			setCubes();
 			game.map.updateFirstSet(cube);
 		}
 	
@@ -316,6 +208,72 @@ public class GameScreen implements Screen
 			game.map.updateSecondSet(cube);
 		}
 			
+		checkCollision();
+	}
+	
+	/**
+	 * Sets type of cube depending on score player is on.
+	 */
+	public void setCubes()
+	{
+		if (scoreInt < 38)
+		{
+			cube = "CubeGreen.obj";
+		} else if (scoreInt > 38 && scoreInt < 133)
+		{
+			cube = "CubeYellow.obj";
+			scale = 0;	
+			if (yellowSpeedNeedsUpdate)
+			{
+				playerSpeedNeedsUpdate = true;
+				yellowSpeedNeedsUpdate = false;
+			}
+		} else if (scoreInt > 133 && scoreInt < 245) 
+		{
+			cube = "CubeOrange.obj";
+			scale = 0;
+			if (orangeSpeedNeedsUpdate)
+			{
+				playerSpeedNeedsUpdate = true;
+				orangeSpeedNeedsUpdate = false;
+				game.map.difficulty++;
+			}
+		} else if (scoreInt > 245 && scoreInt < 393)
+		{
+			cube = "CubeBlue.obj";
+			scale = 0;
+			if (blueSpeedNeedsUpdate)
+			{
+				playerSpeedNeedsUpdate = true;
+				blueSpeedNeedsUpdate = false;
+			}
+		} else if (scoreInt > 393 && scoreInt < 555) 
+		{
+			cube = "CubeRed.obj";
+			scale = 0;
+			if (redSpeedNeedsUpdate)
+			{
+				playerSpeedNeedsUpdate = true;
+				redSpeedNeedsUpdate = false;
+				game.map.difficulty++;
+			}
+		} else if (scoreInt > 555)
+		{
+			cube = "CubePurple.obj";
+			scale = 0;
+			if (purpleSpeedNeedsUpdate)
+			{
+				playerSpeedNeedsUpdate = true;
+				purpleSpeedNeedsUpdate = false;
+			}
+		}
+	}
+	
+	/**
+	 * Check collision for background or foreground cubes.
+	 */
+	public void checkCollision()
+	{
 		// Check collision for background rows of cubes
 		if (onSecondRow)
 		{
@@ -352,6 +310,71 @@ public class GameScreen implements Screen
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Render signs depending on what score player is on. 
+	 */
+	public void renderSigns()
+	{
+		if (scoreInt < 12)
+		{
+			game.batch.render(level1Sign1);
+			game.batch.render(level1Sign2);
+				game.batch.render(level1Sign3);
+		}
+				
+		if (scoreInt < 58 && scoreInt > 45)
+		{
+			game.batch.render(level2Sign1);
+			game.batch.render(level2Sign2);
+			game.batch.render(level2Sign3);
+		}
+			
+		if (scoreInt < 150 && scoreInt > 133)
+		{
+			game.batch.render(level3Sign1);
+			game.batch.render(level3Sign2);
+			game.batch.render(level3Sign3);
+		}
+			
+		if (scoreInt < 265 && scoreInt > 248)
+		{
+			game.batch.render(level4Sign1);
+			game.batch.render(level4Sign2);
+			game.batch.render(level4Sign3);
+		}
+					
+		if (scoreInt < 426 && scoreInt > 405)
+		{
+			game.batch.render(level5Sign1);
+			game.batch.render(level5Sign2);
+			game.batch.render(level5Sign3);
+		}
+				
+		if (scoreInt < 576 && scoreInt > 560)
+		{
+			game.batch.render(level6Sign1);
+			game.batch.render(level6Sign2);
+			game.batch.render(level6Sign3);
+		}
+	}
+	
+	/**
+	 * Draw all 3d models and score to screen.
+	 */
+	public void draw()
+	{
+		game.batch.begin(game.cam);
+		game.map.drawCubes(environment);
+		game.map.drawFloor();
+		game.batch.render(game.player);
+		game.batch.end();
+		batch.begin();
+		scoreInt = (int) game.player.transform.getTranslation(temp).z / 10;
+		batch.draw(score, 0, 0);
+		font.draw(batch, Integer.toString(scoreInt), 94, 463);
+		batch.end();
 	}
 
 	@Override
