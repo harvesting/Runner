@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -21,7 +20,9 @@ public class Runner extends Game
 	ModelBatch batch;
 	Player player;
 	Map map;
-	Screen menu;
+	MenuScreen menu;
+	EndScreen end;
+	GameScreen game;
 	PerspectiveCamera cam;
 	Vector3 temp = new Vector3();
 	
@@ -55,6 +56,8 @@ public class Runner extends Game
 		cam.far = 100;
 		cam.fieldOfView = 65;
 		menu = new MenuScreen(this);
+		game = new GameScreen(this);
+		end = new EndScreen(game, this);
 		this.setScreen(menu);
 	}
 	

@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
@@ -8,6 +10,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -24,6 +28,7 @@ public class EndScreen implements Screen
 	private final GameScreen gameScreen;
 	private final Runner game;
 	private Vector3 temp;
+	private Random seed;
 	
 	public EndScreen(GameScreen gameScreen, Runner game)
 	{
@@ -34,6 +39,7 @@ public class EndScreen implements Screen
 		font = new BitmapFont(Gdx.files.internal("Tekton.fnt"), Gdx.files.internal("Tekton.png"), false);
 		font.setColor(Color.WHITE);
 		temp = new Vector3();
+		seed = new Random();
 	}
 	
 	@Override
@@ -58,8 +64,7 @@ public class EndScreen implements Screen
 			game.player.oldPosition.set(game.player.position);
 			game.player.transform.set(game.player.oldPosition, game.player.oldRotation);
 			game.player.hitbox.setPosition(game.player.position.x, game.player.position.z);
-			game.map.fenceForeground.transform.setToTranslation(temp.set(0, 0, 110));
-			game.map.fenceBackground.transform.setToTranslation(temp.set(0, 0, 210));
+			game.player.update(Gdx.graphics.getDeltaTime(), 0);
 			
 			for (int row = 2; row >= 0; row--)
 			{
@@ -68,6 +73,40 @@ public class EndScreen implements Screen
 				game.map.floor[row][2].transform.setToTranslation(-100, 0, row * 100);
 			}
 			
+			for (int r = 0; r < 80; r++)
+			{
+				for (int c = 0; c < 7; c++)
+				{
+					game.map.cubes[r][c] = null;
+					game.map.cubeHitboxes[r][c] = null;
+				}
+			}
+			
+			game.map.difficulty = 0;
+			game.map.lastRow = 350;
+			game.player.velocityForward.set(temp.set(0, 0, 20f));
+			game.player.velocityLeftRight.set(temp.set(20f, 0, 0));			
+			game.player.speed = 0;
+			
+			for (int r = 0; r < 80; r++)
+			{
+				for (int c = 0; c <= game.map.difficulty; c++) //difficulty is how many random cubes per row; max is about 2 to 3
+				{
+					int col = seed.nextInt(6);
+					int randX = seed.nextInt(130) - 65;
+					game.map.cubes[r][col] = new ModelInstance((Model) game.manager.get("CubeGreen.obj"), temp.set(randX, 2.7f, game.map.lastRow - (r * 3f)));
+					game.map.cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
+					game.map.cubeHitboxes[r][col].setPosition(randX, game.map.lastRow - (r * 3f));
+				}
+			}
+			
+			game.menu.playerZ = 100;
+			game.game.playerZ = 100;
+			game.game.playerZCubes1 = 235;
+			game.game.playerZCubes2 = 355;
+			game.map.fenceForeground.transform.setToTranslation(temp.set(0, 0, 110));
+			game.map.fenceBackground.transform.setToTranslation(temp.set(0, 0, 210));
+			game.map.onForeground = true;
 			game.setScreen(game.menu);
 		}
 	}

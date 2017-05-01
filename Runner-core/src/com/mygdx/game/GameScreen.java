@@ -42,12 +42,12 @@ public class GameScreen implements Screen
 	private ModelInstance level6Sign2;
 	private ModelInstance level6Sign3;
 	
-	private float playerZ = 100;
-	private float playerZCubes1 = 235;
-	private float playerZCubes2 = 355;
+	float playerZ = 100;
+	float playerZCubes1 = 235;
+	float playerZCubes2 = 355;
 	private boolean onSecondRow;
 	private boolean onFirstRow;
-	private boolean playerSpeedNeedsUpdate;
+	boolean playerSpeedNeedsUpdate;
 	private boolean redSpeedNeedsUpdate;
 	private boolean yellowSpeedNeedsUpdate;
 	private boolean orangeSpeedNeedsUpdate;
@@ -55,6 +55,7 @@ public class GameScreen implements Screen
 	private boolean blueSpeedNeedsUpdate;
 	private Vector3 temp;
 	int scoreInt;
+	int scale = 0;
 	String cube = "";
 	
 	Hitbox playerHitbox;
@@ -227,7 +228,7 @@ public class GameScreen implements Screen
 		game.cam.update();
 		game.player.update(Gdx.graphics.getDeltaTime(), 1);
 
-		// Updates first set of cubes, player speed, difficulty, and cube type
+		// Updates first row and sets new cubes
 		if (game.player.transform.getTranslation(temp).z >= playerZCubes1)
 		{
 			playerZCubes1 += 225;
@@ -240,6 +241,7 @@ public class GameScreen implements Screen
 			} else if (scoreInt > 38 && scoreInt < 133)
 			{
 				cube = "CubeYellow.obj";
+				scale = 0;	
 				if (yellowSpeedNeedsUpdate)
 				{
 					playerSpeedNeedsUpdate = true;
@@ -248,6 +250,7 @@ public class GameScreen implements Screen
 			} else if (scoreInt > 133 && scoreInt < 245) 
 			{
 				cube = "CubeOrange.obj";
+				scale = 0;
 				if (orangeSpeedNeedsUpdate)
 				{
 					playerSpeedNeedsUpdate = true;
@@ -257,6 +260,7 @@ public class GameScreen implements Screen
 			} else if (scoreInt > 245 && scoreInt < 393)
 			{
 				cube = "CubeBlue.obj";
+				scale = 0;
 				if (blueSpeedNeedsUpdate)
 				{
 					playerSpeedNeedsUpdate = true;
@@ -265,6 +269,7 @@ public class GameScreen implements Screen
 			} else if (scoreInt > 393 && scoreInt < 555) 
 			{
 				cube = "CubeRed.obj";
+				scale = 0;
 				if (redSpeedNeedsUpdate)
 				{
 					playerSpeedNeedsUpdate = true;
@@ -274,13 +279,14 @@ public class GameScreen implements Screen
 			} else if (scoreInt > 555)
 			{
 				cube = "CubePurple.obj";
+				scale = 0;
 				if (purpleSpeedNeedsUpdate)
 				{
 					playerSpeedNeedsUpdate = true;
 					purpleSpeedNeedsUpdate = false;
 				}
 			}
-			game.map.updateFirstSetOfCubes(cube);
+			game.map.updateFirstSet(cube);
 		}
 	
 		// Updates player speed
@@ -301,13 +307,13 @@ public class GameScreen implements Screen
 			game.map.updateAll();
 		}
 		
-		// Update second set of cubes
+		// Update second rows of cubes
 		if (game.player.transform.getTranslation(temp).z >= playerZCubes2)
 		{
 			playerZCubes2 += 225;
 			onSecondRow = false;
 			onFirstRow = true;
-			game.map.updatedSecondSetOfCubes(cube);
+			game.map.updateSecondSet(cube);
 		}
 			
 		// Check collision for background rows of cubes

@@ -19,7 +19,7 @@ public class MenuScreen implements Screen
 	Runner game;
 	Vector3 temp = new Vector3();
 	ModelInstance menu;
-	private float playerZ;
+	float playerZ;
 	
 	public MenuScreen(Runner game)
 	{
@@ -65,7 +65,7 @@ public class MenuScreen implements Screen
 			
 			playerZ = 100;
 			game.cam.fieldOfView = 65;
-			game.setScreen(new GameScreen(game));
+			game.setScreen(game.game);
 		}
 		
 		if (game.player.transform.getTranslation(temp).z >= playerZ)

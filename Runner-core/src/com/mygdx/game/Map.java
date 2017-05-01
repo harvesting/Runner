@@ -26,7 +26,7 @@ public class Map
 	
 	int difficulty;
 	float lastRow;
-	private boolean onForeground;
+	boolean onForeground;
 	
 	public Map(Runner runner)
 	{
@@ -60,7 +60,7 @@ public class Map
 		
 		for (int r = 0; r < 80; r++)
 		{
-			for (int c = 0; c <= difficulty; c++) //difficulty is how many random cubes per row; max is about 2 to 3
+			for (int c = 0; c <= difficulty; c++) //difficulty is how many random cubes per row; max is 2
 			{
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
@@ -72,8 +72,7 @@ public class Map
 	}
 	
 	/**
-	 * Prints a 2d array. Each value is represented with a 1 or 0 to represent null or not.
-	 * Used for testing.
+	 * Prints a 2d array. Each value is represented with a 1 or 0 to represent if that space is null or not.
 	 * @param array - array to be printed
 	 */
 	public void print(ModelInstance[][] array) 
@@ -93,9 +92,9 @@ public class Map
 			System.out.println();
 		}
 	}
-	
+
 	/**
-	 * Render floor and fence with specified environment.
+	 * Render floor and cubes with specified environment.
 	 * @param env - the environment the floor and cubes should be rendered with.
 	 */
 	public void drawFloor(Environment env)
@@ -130,8 +129,8 @@ public class Map
 	}
 	
 	/**
-	 * Render cubes.
-	 * @param env - the environment the cubes should be rendered with.
+	 * Draws cubes with specified environment.
+	 * @param env - the environment to draw the cubes with
 	 */
 	public void drawCubes(Environment env)
 	{
@@ -148,7 +147,7 @@ public class Map
 	}
 
 	/**
-	 * Updates position of fence and floor.
+	 * Update both fence and floor.
 	 */
 	public void updateAll()
 	{
@@ -172,8 +171,7 @@ public class Map
 	}
 	
 	/**
-	 * Updates position of floor only.
-	 * @param scale
+	 * Update floor.
 	 */
 	public void updateFloor()
 	{
@@ -187,12 +185,11 @@ public class Map
 	}
 	
 	/**
-	 * Updates first set of cubes.
-	 * @param cube - the file for type of cube to be placed in first set
+	 * Update first set of cubes.
+	 * @param cube - the type of cube to be put into the array
 	 */
-	public void updateFirstSetOfCubes(String cube) 
+	public void updateFirstSet(String cube) 
 	{	
-		//Clears first half of 2d array and each cube's corresponding hitbox
 		for (int r = 40; r < 80; r++)
 		{
 			for (int c = 0; c < 7; c++)
@@ -201,13 +198,11 @@ public class Map
 				cubeHitboxes[r][c] = null;
 			}
 		}
-		lastRow += 225;
 		
-		//Assigns a new cube and position in random spots of first half of 2d array
-		//Sets each hitbox location to location of cube
+		lastRow += 225;
 		for (int r = 40; r < 80; r++)
 		{
-			for (int c = 0; c <= difficulty; c++)
+			for (int c = 0; c <= difficulty; c++) //difficulty is how many random cubes per row; max is about 2 to 3
 			{
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
@@ -215,16 +210,15 @@ public class Map
 				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
 				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
-		}
+		}	
 	}
 	
 	/**
-	 * Updates second set of cubes.
-	 * @param cube - the file for type of cube to be placed in second set
+	 * Update second set of cubes.
+	 * @param cube - the type of cube to be put into the array
 	 */
-	public void updatedSecondSetOfCubes(String cube)
+	public void updateSecondSet(String cube)
 	{
-		//Clears second half of 2d array and each cube's corresponding hitbox
 		for (int r = 0; r < 40; r++)
 		{
 			for (int c = 0; c < 7; c++)
@@ -235,11 +229,9 @@ public class Map
 			
 		}
 		
-		//Assigns a new cube and position in random spots of second half of 2d array
-		//Sets each hitbox location to location of cube
 		for (int r = 0; r < 40; r++)
 		{
-			for (int c = 0; c <= difficulty; c++)
+			for (int c = 0; c <= difficulty; c++) //difficulty is how many random cubes per row; max is about 2 to 3
 			{
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
