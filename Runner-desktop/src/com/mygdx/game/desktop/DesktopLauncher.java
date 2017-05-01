@@ -1,5 +1,4 @@
 package com.mygdx.game.desktop;
-//doesn't matter
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -12,5 +11,6 @@ public class DesktopLauncher
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new Runner(), config);
 		config.resizable = false;
+		config.title = "Cube Runner";
 	}
 }

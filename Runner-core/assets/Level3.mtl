@@ -2,8 +2,9 @@
 ## Alias OBJ Material File
 # Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
 
-newmtl _8
+newmtl Level3
 Ka 0.000000 0.000000 0.000000
-Kd 1.000000 1.000000 0.400000
-Ks 0.330000 0.330000 0.330000
+Kd 0.501961 0.501961 0.501961
+Ks 0.000000 0.000000 0.000000
+map_Kd Level3/Level3.png
 

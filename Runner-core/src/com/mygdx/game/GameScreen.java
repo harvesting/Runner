@@ -1,44 +1,63 @@
 package com.mygdx.game;
-//Liad
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.SpotLight;
 import com.badlogic.gdx.math.Vector3;
 
+/**
+ * The screen that runs the game.
+ * 
+ * @author liaderlich
+ *
+ */
 public class GameScreen implements Screen
 {
 	Runner game;
-	private Vector3 temp = new Vector3();
-	private ModelInstance testCube;
-	private ModelInstance sky;
-	private ModelInstance sky2;
-		//235
-		//355
-		// r * 3f
-		//playerZCubes1 += 225; for both
+	private ModelInstance level1Sign1;
+	private ModelInstance level1Sign2;
+	private ModelInstance level1Sign3;
+	private ModelInstance level2Sign1;
+	private ModelInstance level2Sign2;
+	private ModelInstance level2Sign3;
+	private ModelInstance level3Sign1;
+	private ModelInstance level3Sign2;
+	private ModelInstance level3Sign3;
+	private ModelInstance level4Sign1;
+	private ModelInstance level4Sign2;
+	private ModelInstance level4Sign3;
+	private ModelInstance level5Sign1;
+	private ModelInstance level5Sign2;
+	private ModelInstance level5Sign3;
+	private ModelInstance level6Sign1;
+	private ModelInstance level6Sign2;
+	private ModelInstance level6Sign3;
+	
 	private float playerZ = 100;
 	private float playerZCubes1 = 235;
 	private float playerZCubes2 = 355;
-//	Hitbox testHitbox;
-	Hitbox playerHitbox;
 	private boolean onSecondRow;
 	private boolean onFirstRow;
+	private boolean playerSpeedNeedsUpdate;
+	private boolean redSpeedNeedsUpdate;
+	private boolean yellowSpeedNeedsUpdate;
+	private boolean orangeSpeedNeedsUpdate;
+	private boolean purpleSpeedNeedsUpdate;
+	private boolean blueSpeedNeedsUpdate;
+	private Vector3 temp;
+	int scoreInt;
+	String cube = "";
+	
+	Hitbox playerHitbox;
 	Environment environment;
 	DirectionalLight whiteLight;
 	DirectionalLight yellowLight;
@@ -46,44 +65,100 @@ public class GameScreen implements Screen
 	BitmapFont font;
 	SpriteBatch batch;
 	Texture score;
-	int scoreInt;
 	
 	public GameScreen(Runner game)
 	{
 		this.game = game;
 		batch = new SpriteBatch();
-//		testCube = new ModelInstance((Model) manager.get("Cube.g3db"), 10, 2.7f, 80);
-//		testCube.transform.scl(10f);
-//		testHitbox = new Hitbox(2.7f, 2.7f);
-//		testHitbox.setPosition(testCube.transform.getTranslation(temp).x, testCube.transform.getTranslation(temp).z);
+		temp = new Vector3();
 		playerHitbox = new Hitbox(2.6f, 2.6f);
 		playerHitbox.setPosition(game.player.transform.getTranslation(temp).x, game.player.transform.getTranslation(temp).y);
-//		test.get(i).setPosition(floor[row][2].transform.getTranslation(temp).x, floor[row][2].transform.getTranslation(temp).y);
 		onFirstRow = true;
-//		map.print(map.cubes);
 		whiteLight = new DirectionalLight();
 		yellowLight = new DirectionalLight();
 		environment = new Environment();
 		environment.add(whiteLight.set(Color.WHITE, temp.set(.5f, -1f, -1f)));
 		environment.add(yellowLight.set(Color.WHITE, temp.set(-.5f, 1f, 1f)));
-//		lit = new SpotLight();
-//		environment.add(lit.set(Color.WHITE, temp.set(0, -1f, 1f), Vector3.Z, 1, 90, 0));
-//		whiteLight.set
-//		Light lig = new Light();
-//		menu.transform.setToRotation(Vector3.Y, 180);
-//		menu.transform.rotate(Vector3.Z, 180);
-//		menu.transform.rotate(Vector3.Z, 180);
-//		menu.transform.rotate(Vector3.Y, -90);
-		font = new BitmapFont();
+		
+		level1Sign1 = new ModelInstance((Model) game.manager.get("Level1.obj"), 0, 13, 110);
+		level1Sign1.transform.rotate(Vector3.Y, 180);
+		level1Sign1.transform.rotate(Vector3.Z, 180);
+		level1Sign2 = new ModelInstance((Model) game.manager.get("Level1.obj"), -40, 13, 110);
+		level1Sign2.transform.rotate(Vector3.Y, 180);
+		level1Sign2.transform.rotate(Vector3.Z, 180);
+		level1Sign3 = new ModelInstance((Model) game.manager.get("Level1.obj"), 40, 13, 110);
+		level1Sign3.transform.rotate(Vector3.Y, 180);
+		level1Sign3.transform.rotate(Vector3.Z, 180);
+		
+		level2Sign1 = new ModelInstance((Model) game.manager.get("Level2.obj"), 0, 13, 570);
+		level2Sign1.transform.rotate(Vector3.Y, 180);
+		level2Sign1.transform.rotate(Vector3.Z, 180);
+		level2Sign2 = new ModelInstance((Model) game.manager.get("Level2.obj"), -40, 13, 570);
+		level2Sign2.transform.rotate(Vector3.Y, 180);
+		level2Sign2.transform.rotate(Vector3.Z, 180);
+		level2Sign3 = new ModelInstance((Model) game.manager.get("Level2.obj"), 40, 13, 570);
+		level2Sign3.transform.rotate(Vector3.Y, 180);
+		level2Sign3.transform.rotate(Vector3.Z, 180);
+		
+		level3Sign1 = new ModelInstance((Model) game.manager.get("Level3.obj"), 0, 13, 1460);
+		level3Sign1.transform.rotate(Vector3.Y, 180);
+		level3Sign1.transform.rotate(Vector3.Z, 180);
+		level3Sign2 = new ModelInstance((Model) game.manager.get("Level3.obj"), -40, 13, 1460);
+		level3Sign2.transform.rotate(Vector3.Y, 180);
+		level3Sign2.transform.rotate(Vector3.Z, 180);
+		level3Sign3 = new ModelInstance((Model) game.manager.get("Level3.obj"), 40, 13, 1460);
+		level3Sign3.transform.rotate(Vector3.Y, 180);
+		level3Sign3.transform.rotate(Vector3.Z, 180);
+		
+		level4Sign1 = new ModelInstance((Model) game.manager.get("Level4.obj"), 0, 13, 2600);
+		level4Sign1.transform.rotate(Vector3.Y, 180);
+		level4Sign1.transform.rotate(Vector3.Z, 180);
+		level4Sign2 = new ModelInstance((Model) game.manager.get("Level4.obj"), -40, 13, 2600);
+		level4Sign2.transform.rotate(Vector3.Y, 180);
+		level4Sign2.transform.rotate(Vector3.Z, 180);
+		level4Sign3 = new ModelInstance((Model) game.manager.get("Level4.obj"), 40, 13, 2600);
+		level4Sign3.transform.rotate(Vector3.Y, 180);
+		level4Sign3.transform.rotate(Vector3.Z, 180);
+		
+		level5Sign1 = new ModelInstance((Model) game.manager.get("Level5.obj"), 0, 13, 4170);
+		level5Sign1.transform.rotate(Vector3.Y, 180);
+		level5Sign1.transform.rotate(Vector3.Z, 180);
+		level5Sign2 = new ModelInstance((Model) game.manager.get("Level5.obj"), -40, 13, 4170);
+		level5Sign2.transform.rotate(Vector3.Y, 180);
+		level5Sign2.transform.rotate(Vector3.Z, 180);
+		level5Sign3 = new ModelInstance((Model) game.manager.get("Level5.obj"), 40, 13, 4170);
+		level5Sign3.transform.rotate(Vector3.Y, 180);
+		level5Sign3.transform.rotate(Vector3.Z, 180);
+		
+		level6Sign1 = new ModelInstance((Model) game.manager.get("Level6.obj"), 0, 13, 5750);
+		level6Sign1.transform.rotate(Vector3.Y, 180);
+		level6Sign1.transform.rotate(Vector3.Z, 180);
+		level6Sign2 = new ModelInstance((Model) game.manager.get("Level6.obj"), -40, 13, 5750);
+		level6Sign2.transform.rotate(Vector3.Y, 180);
+		level6Sign2.transform.rotate(Vector3.Z, 180);
+		level6Sign3 = new ModelInstance((Model) game.manager.get("Level6.obj"), 40, 13, 5750);
+		level6Sign3.transform.rotate(Vector3.Y, 180);
+		level6Sign3.transform.rotate(Vector3.Z, 180);
+		
+		font = new BitmapFont(Gdx.files.internal("Tekton.fnt"), Gdx.files.internal("Tekton.png"), false);
 		font.setColor(Color.WHITE);
-		font.getData().scale(.15f);
+		font.getData().scale(.03f);
 		score = new Texture("Score.png");
 		scoreInt = 0;
-//		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
-//		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-//		parameter.size = 12;
-//		BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
-//		generator.dispose(); // don't forget to dispose to avoid memory leaks!
+		
+		playerSpeedNeedsUpdate = false;
+		redSpeedNeedsUpdate = true;
+		blueSpeedNeedsUpdate = true;
+		yellowSpeedNeedsUpdate = true;
+		orangeSpeedNeedsUpdate = true;
+		purpleSpeedNeedsUpdate = true;
+		
+		for (int row = 2; row >= 0; row--)
+		{
+			game.map.floor[row][0].transform.setToTranslation(temp.set(100, 0, row * 100));
+			game.map.floor[row][1].transform.setToTranslation(temp.set(0, 0, row * 100));
+			game.map.floor[row][2].transform.setToTranslation(temp.set(-100, 0, row * 100));
+		}
 	}
 	
 	@Override
@@ -95,52 +170,147 @@ public class GameScreen implements Screen
 		game.map.drawCubes(environment);
 		game.map.drawFloor();
 		game.batch.render(game.player);
+		
+		// Renders level signs only at certain interval
+		if (scoreInt < 12)
+		{
+			game.batch.render(level1Sign1);
+			game.batch.render(level1Sign2);
+			game.batch.render(level1Sign3);
+		}
+		
+		if (scoreInt < 58 && scoreInt > 45)
+		{
+			game.batch.render(level2Sign1);
+			game.batch.render(level2Sign2);
+			game.batch.render(level2Sign3);
+		}
+		
+		if (scoreInt < 150 && scoreInt > 133)
+		{
+			game.batch.render(level3Sign1);
+			game.batch.render(level3Sign2);
+			game.batch.render(level3Sign3);
+		}
+		
+		if (scoreInt < 265 && scoreInt > 248)
+		{
+			game.batch.render(level4Sign1);
+			game.batch.render(level4Sign2);
+			game.batch.render(level4Sign3);
+		}
+		
+		if (scoreInt < 426 && scoreInt > 405)
+		{
+			game.batch.render(level5Sign1);
+			game.batch.render(level5Sign2);
+			game.batch.render(level5Sign3);
+		}
+		
+		if (scoreInt < 576 && scoreInt > 560)
+		{
+			game.batch.render(level6Sign1);
+			game.batch.render(level6Sign2);
+			game.batch.render(level6Sign3);
+		}
+		
 		game.batch.end();
 		batch.begin();
 		scoreInt = (int) game.player.transform.getTranslation(temp).z / 10;
-//		(int) game.player.transform.getTranslation(temp).z
 		batch.draw(score, 0, 0);
-		font.draw(batch, Integer.toString(scoreInt), 70, 462);
+		font.draw(batch, Integer.toString(scoreInt), 94, 463);
 		batch.end();
-//		batch.render(testCube);
-		// batch.render(sky);
-		// batch.render(sky2);
-		if (game.player.transform.getTranslation(temp).z >= playerZ)
-		{
-			playerZ += 100;
-			game.map.update();
-//			if (playerZ != 100)
-//			{
-//				System.out.println("update");
-//				map.updateCubes();
-//			}
-		}
-//		map.drawSky();
-//		menu.transform.rotate(Vector3.X, 1);
-		//339
-//		menu.transform.setToTranslation(0, 0, 1);
+
 		game.cam.position.set(game.player.transform.getTranslation(temp).add(0, 5, -5));
 		game.cam.lookAt(game.player.transform.getTranslation(temp));
 		game.cam.rotate(temp.set(1, 0, 0), -25);
 		game.cam.update();
-		game.player.update(Gdx.graphics.getDeltaTime(), game.map, 1);
-			
+		game.player.update(Gdx.graphics.getDeltaTime(), 1);
+
+		// Updates first set of cubes, player speed, difficulty, and cube type
 		if (game.player.transform.getTranslation(temp).z >= playerZCubes1)
 		{
 			playerZCubes1 += 225;
 			onSecondRow = true;
 			onFirstRow = false;
-			game.map.updateFirstRow();
+			
+			if (scoreInt < 38)
+			{
+				cube = "CubeGreen.obj";
+			} else if (scoreInt > 38 && scoreInt < 133)
+			{
+				cube = "CubeYellow.obj";
+				if (yellowSpeedNeedsUpdate)
+				{
+					playerSpeedNeedsUpdate = true;
+					yellowSpeedNeedsUpdate = false;
+				}
+			} else if (scoreInt > 133 && scoreInt < 245) 
+			{
+				cube = "CubeOrange.obj";
+				if (orangeSpeedNeedsUpdate)
+				{
+					playerSpeedNeedsUpdate = true;
+					orangeSpeedNeedsUpdate = false;
+					game.map.difficulty++;
+				}
+			} else if (scoreInt > 245 && scoreInt < 393)
+			{
+				cube = "CubeBlue.obj";
+				if (blueSpeedNeedsUpdate)
+				{
+					playerSpeedNeedsUpdate = true;
+					blueSpeedNeedsUpdate = false;
+				}
+			} else if (scoreInt > 393 && scoreInt < 555) 
+			{
+				cube = "CubeRed.obj";
+				if (redSpeedNeedsUpdate)
+				{
+					playerSpeedNeedsUpdate = true;
+					redSpeedNeedsUpdate = false;
+					game.map.difficulty++;
+				}
+			} else if (scoreInt > 555)
+			{
+				cube = "CubePurple.obj";
+				if (purpleSpeedNeedsUpdate)
+				{
+					playerSpeedNeedsUpdate = true;
+					purpleSpeedNeedsUpdate = false;
+				}
+			}
+			game.map.updateFirstSetOfCubes(cube);
+		}
+	
+		// Updates player speed
+		if (playerSpeedNeedsUpdate)
+		{
+			if (game.player.transform.getTranslation(temp).z > game.map.lastRow - (79 * 3) - 15)
+			{
+				game.player.updateForwardSpeed(5);
+				game.player.updateLeftRightSpeed(5);
+				playerSpeedNeedsUpdate = false;
+			}
 		}
 		
+		// Updates map and fence
+		if (game.player.transform.getTranslation(temp).z >= playerZ)
+		{
+			playerZ += 100;
+			game.map.updateAll();
+		}
+		
+		// Update second set of cubes
 		if (game.player.transform.getTranslation(temp).z >= playerZCubes2)
 		{
 			playerZCubes2 += 225;
 			onSecondRow = false;
 			onFirstRow = true;
-			game.map.updateSecondRow();
+			game.map.updatedSecondSetOfCubes(cube);
 		}
 			
+		// Check collision for background rows of cubes
 		if (onSecondRow)
 		{
 			for (int row = 0; row < 40; row++)
@@ -151,7 +321,7 @@ public class GameScreen implements Screen
 					{
 						if (game.player.hitbox.didCollide(game.map.cubeHitboxes[row][col]))
 						{
-							game.setScreen(new EndScreen());
+							game.setScreen(new EndScreen(this, game));
 						}
 					}
 				}
@@ -159,6 +329,7 @@ public class GameScreen implements Screen
 		
 		}
 			
+		// Check collision for foreground rows of cubes
 		if (onFirstRow)
 		{
 			for (int row = 40; row < 80; row++)
@@ -169,14 +340,13 @@ public class GameScreen implements Screen
 					{
 						if (game.player.hitbox.didCollide(game.map.cubeHitboxes[row][col]))
 						{
-							game.setScreen(new EndScreen());
+							game.setScreen(new EndScreen(this, game));
 						}
 					}
 				}
 			}
 		}
 	}
-
 
 	@Override
 	public void dispose()
@@ -186,37 +356,17 @@ public class GameScreen implements Screen
 	}
 
 	@Override
-	public void show()
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void show() {}
 
 	@Override
-	public void resize(int width, int height)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void resize(int width, int height) {}
 
 	@Override
-	public void pause()
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void pause() {}
 
 	@Override
-	public void resume()
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void resume() {}
 
 	@Override
-	public void hide()
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void hide() {}
 }

@@ -1,6 +1,11 @@
 package com.mygdx.game;
-//Rafael
 
+/**
+ * This class is the menu screen.
+ * 
+ * @author rafaelrajardo
+ * 
+ */
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
@@ -15,10 +20,6 @@ public class MenuScreen implements Screen
 	Vector3 temp = new Vector3();
 	ModelInstance menu;
 	private float playerZ;
-//	private float playerZCubes1;
-//	private float playerZCubes2;
-//	private boolean onFirstRow;
-//	private boolean onSecondRow;
 	
 	public MenuScreen(Runner game)
 	{
@@ -27,19 +28,11 @@ public class MenuScreen implements Screen
 		Gdx.input.setInputProcessor(game.player);
 		game.map.set();
 		playerZ = 100;
-//		playerZCubes1 = 235;
-//		playerZCubes2 = 355;
 		menu = new ModelInstance((Model) game.manager.get("menu.obj"));
 		menu.transform.rotate(Vector3.Y, 180);
 		menu.transform.rotate(Vector3.Z, -180);
 		menu.transform.rotate(Vector3.X, 20);
-//		onFirstRow = true;
-	}
-	
-	@Override
-	public void show() 
-	{
-		
+		game.cam.fieldOfView = 75;
 	}
 
 	@Override
@@ -52,22 +45,16 @@ public class MenuScreen implements Screen
 		game.map.drawFloor();
 		game.batch.render(menu);
 		game.batch.end();
+		
+		//Resets player and floor locations and sets screen to the game screen
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE))
 		{
-//			player.transform.setToTranslation(0, 2, 0);
-//			player.transform.getTranslation(temp);
-//			player.oldPosition = temp;
-//			player.hitbox.setPosition(player.position.x, player.position.z);
-//			
 			game.player.rotation.set(0, 0, 0, 0);
-			game.player.position.set(0, 2, 0);
-//			player.transform.set(temp.set(0, 2, 0), player.rotation);
-			
-			game.player.transform.getRotation(game.player.oldRotation).slerp(game.player.rotation, .1f);
-			game.player.oldPosition.lerp(game.player.position, .7f);
+			game.player.position.set(0, 2, 0);			
+			game.player.transform.getRotation(game.player.oldRotation).set(game.player.rotation);
+			game.player.oldPosition.set(game.player.position);
 			game.player.transform.set(game.player.oldPosition, game.player.oldRotation);
 			game.player.hitbox.setPosition(game.player.position.x, game.player.position.z);
-			
 			
 			for (int row = 2; row >= 0; row--)
 			{
@@ -75,65 +62,41 @@ public class MenuScreen implements Screen
 				game.map.floor[row][1].transform.setToTranslation(-0, 0, row * 100); 					
 				game.map.floor[row][2].transform.setToTranslation(-100, 0, row * 100);
 			}
+			
 			playerZ = 100;
-//			playerZCubes1 = 235;
-//			playerZCubes2 = 355;
-//			onFirstRow = true;
-//			onSecondRow = false;
+			game.cam.fieldOfView = 65;
 			game.setScreen(new GameScreen(game));
-			dispose();
 		}
 		
 		if (game.player.transform.getTranslation(temp).z >= playerZ)
 		{
 			playerZ += 100;
-			game.map.update();
-//			if (playerZ != 100)
-//			{
-//				System.out.println("update");
-//				map.updateCubes();
-//			}
+			game.map.updateFloor();
 		}
+		
 		menu.transform.setTranslation(0, 87, game.player.transform.getTranslation(temp).z + 65);
 		game.cam.position.set(game.player.transform.getTranslation(temp).add(0, 5, -5));
 		game.cam.lookAt(game.player.transform.getTranslation(temp));
 		game.cam.rotate(temp.set(1, 0, 0), -25);
 		game.cam.update();
-		game.player.update(Gdx.graphics.getDeltaTime(), game.map, 0);
-		
+		game.player.update(Gdx.graphics.getDeltaTime(), 0);
 	}
+	
+	@Override
+	public void show() {}
 
 	@Override
-	public void resize(int width, int height) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void resize(int width, int height) {}
 
 	@Override
-	public void pause() 
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void pause() {}
 
 	@Override
-	public void resume() 
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void resume() {}
 
 	@Override
-	public void hide() 
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void hide() {}
 
 	@Override
-	public void dispose() 
-	{
-		// TODO Auto-generated method stub
-	}
+	public void dispose() {}
 }

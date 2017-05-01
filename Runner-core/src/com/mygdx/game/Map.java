@@ -1,65 +1,52 @@
 package com.mygdx.game;
-//Liad
 
-import java.util.ArrayList;
 import java.util.Random;
-
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
+/**
+ * This class holds all map attributes including floor and cubes. It is responsible for updating these as well.
+ * 
+ * @author liaderlich
+ *
+ */
 public class Map
 {
-	Random seed;
-	Vector3 temp = new Vector3();
-	Vector3 mapVelocity;
-	ModelInstance cube;
-	ModelInstance groundLeft, groundMid, groundRight;
-	ModelInstance sky;
-	ModelInstance[][] floor;
+	private Runner game;
+	private Random seed;
+	private Vector3 temp;
+	
 	ModelInstance fenceBackground;
 	ModelInstance fenceForeground;
-	Runner game;
-	int zOfFirstRow = 25;
-	Hitbox[][] cubeHitboxes;
 	ModelInstance[][] cubes;
-	private int difficulty;
+	ModelInstance[][] floor;
+	Hitbox[][] cubeHitboxes;
+	
+	int difficulty;
 	float lastRow;
-	float fenceZ;
 	private boolean onForeground;
-	int level = 0;
 	
 	public Map(Runner runner)
 	{
 		game = runner;
 		seed = new Random();
-		sky = new ModelInstance((Model) game.manager.get("sky.obj"), 0, 40, 90);
-//		sky.transform.rotate(rotation.set(Vector3.Y, 90));
-//		sky.transform.set(rotation.set(Vector3.Y, 90));
-		sky.transform.rotate(Vector3.X, 90);
-		sky.transform.rotate(Vector3.Y, 180);
-		sky.transform.rotate(Vector3.X, 180);
-		sky.transform.rotate(Vector3.Z, 90);
-		sky.transform.rotate(Vector3.X, 90);
-//		sky.transform.setToRotation(Vector3.X, 45);
+		fenceForeground = new ModelInstance((Model) game.manager.get("Fence.g3db"), 0, 0, 110);
+		fenceBackground = new ModelInstance((Model) game.manager.get("Fence.g3db"), 0, 0, 210);
 		floor = new ModelInstance[3][3];
 		cubeHitboxes = new Hitbox[80][7];
 		cubes = new ModelInstance[80][7];
-		fenceForeground = new ModelInstance((Model) game.manager.get("Fence.obj"), 0, 0, 350);
-		fenceBackground = new ModelInstance((Model) game.manager.get("Fence.obj"), 0, 0, 200);
 		difficulty = 0;
 		lastRow = 350;
-		fenceZ = 125;
 		onForeground = true;
+		temp = new Vector3();
 	}
 	
-	public void drawSky()
-	{
-		game.batch.render(sky);
-	}
-	
+	/**
+	 * Creates floor models, cubes, and the cubes' hitboxes and sets them into separate 2d arrays. 
+	 * The cubes are assigned to a spot randomly.
+	 */
 	public void set()
 	{
 		for (int row = 2; row >= 0; row--)
@@ -70,19 +57,25 @@ public class Map
 			
 			floor[row][2] = new ModelInstance((Model) game.manager.get("ground.obj"), -100, 0, row * 100);
 		}
+		
 		for (int r = 0; r < 80; r++)
 		{
-			for (int c = 0; c <= difficulty; c++)
+			for (int c = 0; c <= difficulty; c++) //difficulty is how many random cubes per row; max is about 2 to 3
 			{
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
-				cubes[r][col] = new ModelInstance((Model) game.manager.get("Cube.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubes[r][col] = new ModelInstance((Model) game.manager.get("CubeGreen.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
 				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
 				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
 		}
 	}
 	
+	/**
+	 * Prints a 2d array. Each value is represented with a 1 or 0 to represent null or not.
+	 * Used for testing.
+	 * @param array - array to be printed
+	 */
 	public void print(ModelInstance[][] array) 
 	{
 		for (ModelInstance[] row: array)
@@ -101,6 +94,10 @@ public class Map
 		}
 	}
 	
+	/**
+	 * Render floor and fence with specified environment.
+	 * @param env - the environment the floor and cubes should be rendered with.
+	 */
 	public void drawFloor(Environment env)
 	{
 		game.batch.render(fenceForeground);
@@ -115,10 +112,13 @@ public class Map
 		}
 	}
 	
+	/**
+	 * Render floor and fence without environment.
+	 */
 	public void drawFloor()
 	{
 		game.batch.render(fenceForeground);
-//		game.batch.render(fenceBackground);
+		game.batch.render(fenceBackground);
 				
 		for (ModelInstance[] rows : floor)
 		{
@@ -129,6 +129,10 @@ public class Map
 		}
 	}
 	
+	/**
+	 * Render cubes.
+	 * @param env - the environment the cubes should be rendered with.
+	 */
 	public void drawCubes(Environment env)
 	{
 		for (ModelInstance[] row : cubes)
@@ -143,17 +147,20 @@ public class Map
 		}
 	}
 
-	public void update()
+	/**
+	 * Updates position of fence and floor.
+	 */
+	public void updateAll()
 	{
-//		if (onForeground)
-//		{
-//			fenceForeground.transform.setTranslation(0, 0, fenceBackground.transform.getTranslation(temp).z + 250);
-//			onForeground = false;
-//		} else 
-//		{
-//			fenceBackground.transform.setTranslation(0, 0, fenceForeground.transform.getTranslation(temp).z + 250);
-//			onForeground = true;
-//		}
+		if (onForeground)
+		{
+			fenceForeground.transform.setTranslation(0, 0, fenceBackground.transform.getTranslation(temp).z + 100);
+			onForeground = false;
+		} else 
+		{
+			fenceBackground.transform.setTranslation(0, 0, fenceForeground.transform.getTranslation(temp).z + 100);
+			onForeground = true;
+		}
 		
 		for (ModelInstance[] rows : floor)
 		{
@@ -164,8 +171,28 @@ public class Map
 		}
 	}
 	
-	public void updateFirstRow() 
+	/**
+	 * Updates position of floor only.
+	 * @param scale
+	 */
+	public void updateFloor()
+	{
+		for (ModelInstance[] rows : floor)
+		{
+			for (ModelInstance ground : rows)
+			{
+				ground.transform.translate(0, 0, 100);
+			}
+		}
+	}
+	
+	/**
+	 * Updates first set of cubes.
+	 * @param cube - the file for type of cube to be placed in first set
+	 */
+	public void updateFirstSetOfCubes(String cube) 
 	{	
+		//Clears first half of 2d array and each cube's corresponding hitbox
 		for (int r = 40; r < 80; r++)
 		{
 			for (int c = 0; c < 7; c++)
@@ -174,42 +201,30 @@ public class Map
 				cubeHitboxes[r][c] = null;
 			}
 		}
-//		cubes[r][c].transform.translate(0, 0, 93);
 		lastRow += 225;
+		
+		//Assigns a new cube and position in random spots of first half of 2d array
+		//Sets each hitbox location to location of cube
 		for (int r = 40; r < 80; r++)
 		{
 			for (int c = 0; c <= difficulty; c++)
 			{
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
-				cubes[r][col] = new ModelInstance((Model) game.manager.get("Cube.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubes[r][col] = new ModelInstance((Model) game.manager.get(cube), temp.set(randX, 2.7f, lastRow - (r * 3f)));
 				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
 				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
 		}
-		
-		/*old method*/
-//		ModelInstance tempArray[] = cubes[0];
-//		for (int i = 0; i < 30; i++) 
-//		{
-//			if (cubes[29][i] != null)
-//			{
-//				lastRow += 10;
-//				cubes[29][i].transform.setTranslation(temp.set(seed.nextInt(200) - 100, 2.7f, lastRow));
-//			}
-//		}
-//		cubes[0] = cubes[29];
-//		for (int r = 29; r > 1; r--)
-//		{
-//			ModelInstance temp = cubes[r + 1][c];
-//			cubes[r] = cubes[r - 1];
-//		}
-//		print(cubes);
-		
 	}
 	
-	public void updateSecondRow()
+	/**
+	 * Updates second set of cubes.
+	 * @param cube - the file for type of cube to be placed in second set
+	 */
+	public void updatedSecondSetOfCubes(String cube)
 	{
+		//Clears second half of 2d array and each cube's corresponding hitbox
 		for (int r = 0; r < 40; r++)
 		{
 			for (int c = 0; c < 7; c++)
@@ -219,31 +234,19 @@ public class Map
 			}
 			
 		}
+		
+		//Assigns a new cube and position in random spots of second half of 2d array
+		//Sets each hitbox location to location of cube
 		for (int r = 0; r < 40; r++)
 		{
 			for (int c = 0; c <= difficulty; c++)
 			{
-//				int choose = seed.nextInt(2);
-//				if (choose == 0)
-//				{
-//					int randX = seed.nextInt(130) - 65;
-//				} else 
-//				{
-//					
-//				}
 				int col = seed.nextInt(6);
 				int randX = seed.nextInt(130) - 65;
-				cubes[r][col] = new ModelInstance((Model) game.manager.get("Cube.obj"), temp.set(randX, 2.7f, lastRow - (r * 3f)));
+				cubes[r][col] = new ModelInstance((Model) game.manager.get(cube), temp.set(randX, 2.7f, lastRow - (r * 3f)));
 				cubeHitboxes[r][col] = new Hitbox(2.7f, 2.7f);
 				cubeHitboxes[r][col].setPosition(randX, lastRow - (r * 3f));
 			}
 		}
 	}
-	
-	public int checkForNewLevel()
-	{
-		return 3;
-	}
-	
-	
 }

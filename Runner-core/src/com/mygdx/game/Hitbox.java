@@ -1,6 +1,11 @@
 package com.mygdx.game;
-//Rafael
 
+/**
+ * The hitbox that wraps both the player and the cubes.
+ * 
+ * @author rafaelfajardo
+ * 
+ */
 public class Hitbox
 {
 	public float x, y, width, height;
@@ -23,42 +28,5 @@ public class Hitbox
 					(this.y - this.height/2) - (box.y + box.height/2) < 0 && (this.y - this.height/2) - (box.y - box.height/2) > 0) &&
 					((this.x + this.width/2) - (box.x + box.width/2) < 0 &&  (this.x + this.width/2) - (box.x - box.width/2) > 0 || 
 					(this.x - this.width/2) - (box.x + box.width/2) < 0 &&  (this.x - this.width/2) - (box.x - box.width/2) > 0);
-		
-
-			
-		
-//		&&  (this.y + this.height/2) - (box.y - box.height/2) > 0
-		
-//		((this.y - this.height/2) - (box.y + box.height/2) < 0 &&  (this.y - this.height/2) - (box.y - box.height/2) > 0);
-
-		
-		
-//		(this.y - this.height/2)
-		
-		
-//		if ship is between box on -x axis
-//		return ((this.x + this.width/2) - (box.x + box.width/2) < 0 &&  (this.x + this.width/2) - (box.x - box.width/2) > 0) || 
-//					((this.x - this.width/2) - (box.x + box.width/2) < 0 &&  (this.x - this.width/2) - (box.x - box.width/2) > 0);
-		
-//		if left side of the ship is between cube
-//		return ( (this.x + this.width/2) - (box.x + box.width/2) < 0 &&  (this.x + this.width/2) - (box.x - box.width/2) > 0  );
-		
-//		if right side of ship is between cube
-//		return ( (this.x - this.width/2) - (box.x + box.width/2) < 0 &&  (this.x - this.width/2) - (box.x - box.width/2) > 0  );
-		
-
-		
-		//right side
-//		( (this.x - this.width/2) - (box.x + box.width/2) < 0)
-		//left side
-//		( (this.x + this.width/2) - (box.x + box.width/2) < 0)
-		
-//		(box.x + box.width) - (this.x + this.width) > 0
-//		if right side of ship is between box
-//		((this.x + this.width) - (box.x + box.width) < 0) && (this.x - box.x > 0)
-//		if left side of ship is between box
-//		(this.x - (box.x - box.width) > 0 && this.x - box.x < 0)		
-
 	}
-
 }

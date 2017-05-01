@@ -6,7 +6,7 @@ mtllib CubeYellow.mtl
 
 g Mesh1 Model
 
-usemtl _11
+usemtl _8
 v 1.28747 -3 1.10183
 vt -0.0506877 -0.0433791
 vn 0 -1 -0
