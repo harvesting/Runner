@@ -164,13 +164,13 @@ public class GameScreen implements Screen
 		Gdx.gl.glClearColor(232/255f, 244/255f, 248/255f, 1);
 		draw();
 		renderSigns();
-
 		game.cam.position.set(game.player.transform.getTranslation(temp).add(0, 5, -5));
 		game.cam.lookAt(game.player.transform.getTranslation(temp));
 		game.cam.rotate(temp.set(1, 0, 0), -25);
 		game.cam.update();
 		game.player.update(Gdx.graphics.getDeltaTime(), 1);
-
+		checkCollision();
+		
 		// Updates first row and sets new cubes
 		if (game.player.transform.getTranslation(temp).z >= playerZCubes1)
 		{
@@ -207,8 +207,6 @@ public class GameScreen implements Screen
 			onFirstRow = true;
 			game.map.updateSecondSet(cube);
 		}
-			
-		checkCollision();
 	}
 	
 	/**

@@ -161,13 +161,7 @@ public class Map
 			onForeground = true;
 		}
 		
-		for (ModelInstance[] rows : floor)
-		{
-			for (ModelInstance ground : rows)
-			{
-				ground.transform.translate(0, 0, 100);
-			}
-		}
+		updateFloor();
 	}
 	
 	/**
