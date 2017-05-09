@@ -48,11 +48,11 @@ public class GameScreen implements Screen
 	private boolean onSecondRow;
 	private boolean onFirstRow;
 	boolean playerSpeedNeedsUpdate;
-	private boolean redSpeedNeedsUpdate;
-	private boolean yellowSpeedNeedsUpdate;
-	private boolean orangeSpeedNeedsUpdate;
-	private boolean purpleSpeedNeedsUpdate;
-	private boolean blueSpeedNeedsUpdate;
+	boolean redSpeedNeedsUpdate;
+	boolean yellowSpeedNeedsUpdate;
+	boolean orangeSpeedNeedsUpdate;
+	boolean purpleSpeedNeedsUpdate;
+	boolean blueSpeedNeedsUpdate;
 	private Vector3 temp;
 	int scoreInt;
 	int scale = 0;

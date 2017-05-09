@@ -102,6 +102,13 @@ public class MenuScreen implements Screen
 		
 		playerZ = 100;
 		game.cam.fieldOfView = 65;
+		
+		game.game.playerSpeedNeedsUpdate = false;
+		game.game.redSpeedNeedsUpdate = true;
+		game.game.blueSpeedNeedsUpdate = true;
+		game.game.yellowSpeedNeedsUpdate = true;
+		game.game.orangeSpeedNeedsUpdate = true;
+		game.game.purpleSpeedNeedsUpdate = true;
 	}
 	
 	@Override
