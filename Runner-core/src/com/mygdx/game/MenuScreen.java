@@ -3,7 +3,7 @@ package com.mygdx.game;
 /**
  * This class is the menu screen.
  * 
- * @author rafaelrajardo
+ * @author liaderlich
  * 
  */
 import com.badlogic.gdx.Gdx;
