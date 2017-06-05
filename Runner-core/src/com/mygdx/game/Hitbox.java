@@ -3,7 +3,7 @@ package com.mygdx.game;
 /**
  * The hitbox that wraps both the player and the cubes.
  * 
- * @author rafaelfajardo
+ * @author liaderlich
  * 
  */
 public class Hitbox
