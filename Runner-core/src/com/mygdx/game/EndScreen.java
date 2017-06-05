@@ -17,7 +17,7 @@ import com.badlogic.gdx.math.Vector3;
 /**
  * The screen used for when the game ends.
  * 
- * @author rafaelfajardo
+ * @author liaderlich
  * 
  */
 public class EndScreen implements Screen
