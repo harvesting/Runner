@@ -3,7 +3,7 @@ package com.mygdx.game;
 /**
  * The class that holds all attributes of the player (the ship ModelInstance). It is also responsible for updating there attributes.
  * 
- * @author rafaelfajardo
+ * @author liaderlich
  * 
  */
 import com.badlogic.gdx.Input.Keys;
